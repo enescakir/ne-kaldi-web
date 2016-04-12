@@ -36,7 +36,7 @@ Route::group(['prefix' => 'api'], function () {
 
 Route::group(['middleware' => ['web']], function () {
     Route::group(['prefix' => 'admin'], function () {
-        Route::resource('course', 'CourseController');
+        Route::resource('exams', 'ExamController');
 
         Route::get('/', array('as' => 'admin.login', 'uses' => 'Auth\AuthController@getLogin'));
         Route::post('/register', array('as' => 'admin.register','uses' => 'Auth\AuthController@postRegister'));
