@@ -22,6 +22,7 @@ Route::auth();
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
+    Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
 });
 
 /*
@@ -36,5 +37,5 @@ Route::group(['prefix' => 'api'], function () {
 */
 Route::group(['middleware' => ['web']], function () {
         Route::resource('exams', 'ExamController');
-
+        Route::resource('visits', 'VisitController');
 });

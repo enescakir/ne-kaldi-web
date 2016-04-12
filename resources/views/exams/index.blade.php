@@ -34,7 +34,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3">Sınav yok</td>
+                        <td colspan="4">Sınav yok</td>
                     </tr>
                 @endforelse
                 </tbody>

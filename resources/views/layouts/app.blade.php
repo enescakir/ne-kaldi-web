@@ -51,6 +51,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ route('exams.index') }}">Sınavlar</a></li>
+                    <li><a href="{{ route('visits.index') }}">Ziyaretler</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

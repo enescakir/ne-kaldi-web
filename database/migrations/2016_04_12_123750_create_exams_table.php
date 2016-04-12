@@ -18,6 +18,7 @@ class CreateExamsTable extends Migration
             $table->string('abb');
             $table->dateTime('date');
             $table->integer('created_by')->unsigned()->nullable();
+            $table->boolean('activated')->default(false);
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('users');
