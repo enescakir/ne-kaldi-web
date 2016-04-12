@@ -16,7 +16,7 @@ class ApiController extends Controller
 
     public function visit( Request $request ){
         $visit = new Visit();
-        $visit->ip_adress = Request::ip();
+        $visit->ip_adress = $request->ip();
         $visit->device_id = $request->get('device_id');
         $visit->platform = $request->get('platform');
         $visit->name = $request->get('name');
