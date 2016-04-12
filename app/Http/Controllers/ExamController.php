@@ -10,6 +10,16 @@ use App\Exam;
 class ExamController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -17,7 +27,7 @@ class ExamController extends Controller
     public function index()
     {
         $exams = Exam::orderBy('date')->get();
-        return view('admin.exams.index', compact('exams'));
+        return view('exams.index', compact('exams'));
     }
 
     /**
@@ -88,6 +98,7 @@ class ExamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Exam::destroy($id);
+        return 'Success';
     }
 }

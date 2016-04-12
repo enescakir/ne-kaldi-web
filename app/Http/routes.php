@@ -17,7 +17,12 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+
+
+
+Route::group(['prefix' => 'api'], function () {
+    Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -29,18 +34,7 @@ Route::get('/home', 'HomeController@index');
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['prefix' => 'api'], function () {
-    Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
-});
-
 Route::group(['middleware' => ['web']], function () {
-    Route::group(['prefix' => 'admin'], function () {
         Route::resource('exams', 'ExamController');
 
-        Route::get('/', array('as' => 'admin.login', 'uses' => 'Auth\AuthController@getLogin'));
-        Route::post('/register', array('as' => 'admin.register','uses' => 'Auth\AuthController@postRegister'));
-        Route::post('/login', array('as' => 'admin.postLogin', 'uses' => 'Auth\AuthController@postLogin'));
-        Route::get('/logout', array('as' => 'admin.logout', 'uses' => 'Auth\AuthController@getLogout'));
-    });
 });

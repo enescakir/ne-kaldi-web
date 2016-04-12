@@ -8,6 +8,6 @@ use Carbon\Carbon;
 class Exam extends Model
 {
     public function setDateAttribute($date){
-        return $this->attributes['date'] = Carbon::createFromFormat('d/m/Y H:i', $date);
+        return $this->attributes['date'] = Carbon::createFromFormat('d/m/Y - H:i', $date);
     }
 }
