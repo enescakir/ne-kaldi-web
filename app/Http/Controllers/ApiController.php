@@ -23,6 +23,6 @@ class ApiController extends Controller
         $visit->exam_id = $request->get('exam_id');
         $visit->save();
 
-        return response()->setStatusCode(200, 'Visit succesfully stored.');
+        return 'Success';
     }
 }
