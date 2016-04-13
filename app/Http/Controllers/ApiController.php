@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Exam, App\Visit, App\Visitor;
-
+use Log;
 class ApiController extends Controller
 {
     public function exams(){
@@ -19,6 +19,7 @@ class ApiController extends Controller
      * @return string
      */
     public function visit(Request $request ){
+        Log::info('Visit happenned');
         if ($request->exam_id == '0'){
             return 'Its default';
         }
