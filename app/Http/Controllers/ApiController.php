@@ -15,15 +15,13 @@ class ApiController extends Controller
     }
 
     public function visit( Request $request ){
-        $visitor = App\Visitor::where('device_id', $request->get('device_id'))->where('ip_adress', $request->ip())->firstOrCreate($request->all());
         $request['visitor_id'] = $visitor->id;
-        $visit = new Visit($request->all());
-        $visit->save();
+        Visitor::where('device_id', $request->get('device_id'))->where('ip_adress', $request->ip())->firstOrCreate($request->all());
         return 'Success';
     }
 
     public function updateName( Request $request ){
-        $visitor = App\Visitor::where('device_id', $request->get('device_id')->where('ip_adress', $request->ip())->firstOrCreate( $request->all());
+        Visitor::where('device_id', $request->get('device_id')->where('ip_adress', $request->ip())->firstOrCreate( $request->all());
         return 'Success';
     }
 
