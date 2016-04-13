@@ -26,7 +26,7 @@ class VisitController extends Controller
      */
     public function index()
     {
-        $visits = Visit::orderBy('created_at')->get();
+        $visits = Visit::orderBy('created_at')->with('exam','visitor')->get();
         return view('visits.index', compact('visits'));
 
     }

@@ -14,14 +14,14 @@ class CreateVisitsTable extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ip_adress');
-            $table->string('device_id')->nullable();
             $table->string('platform')->nullable();
-            $table->string('name')->nullable();
             $table->integer('exam_id')->unsigned();
+            $table->integer('visitor_id')->unsigned();
+            $table->timestamps();
 
             $table->foreign('exam_id')->references('id')->on('exams');
-            $table->timestamps();
+            $table->foreign('visitor_id')->references('id')->on('visitors');
+
         });
 
     }

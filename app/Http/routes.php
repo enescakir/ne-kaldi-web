@@ -11,11 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::auth();
 
 
 
@@ -23,6 +19,7 @@ Route::auth();
 Route::group(['prefix' => 'api'], function () {
     Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
     Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
+    Route::post('/name/update', array('as' => 'api.name.update', 'uses' => 'ApiController@updateName'));
 });
 
 /*
@@ -36,6 +33,14 @@ Route::group(['prefix' => 'api'], function () {
 |
 */
 Route::group(['middleware' => ['web']], function () {
-        Route::resource('exams', 'ExamController');
-        Route::resource('visits', 'VisitController');
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
+    Route::auth();
+    Route::resource('exams', 'ExamController');
+    Route::resource('visits', 'VisitController');
+    Route::resource('visitors', 'VisitorController');
+
 });

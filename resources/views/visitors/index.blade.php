@@ -2,31 +2,31 @@
 
 @section('content')
     <div class="container">
-    <h1>Ziyaretler</h1>
-    <p class="lead"> Sistemden görüntülenmiş sınavlar.</p>
+    <h1>Ziyaretçiler</h1>
+    <p class="lead"> Sistemi kullanan kişiler</p>
 
     <div class="row">
         <div class="col-md-8">
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
                 <tr>
-                    <th> Sınav </th>
+                    <th> İsim </th>
                     <th> Tarih </th>
-                    <th> Platform </th>
-                    <th> Ziyaretçi No </th>
+                    <th> Ip Adresi </th>
+                    <th> Cihaz No </th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($visits as $visit)
+                @forelse ($visitors as $visitor)
                     <tr>
-                        <td>{{  $visit->exam->abb }} </td>
-                        <td>{{  date("d.m.Y h:m:s", strtotime($visit->created_at)) }}</td>
-                        <td>{{  $visit->platform }} </td>
-                        <td>{{  $visit->visitor->id }} </td>
+                        <td>{{  $visitor->name }} </td>
+                        <td>{{  date("d.m.Y h:m:s", strtotime($visitor->created_at)) }}</td>
+                        <td>{{  $visitor->ip_adress }} </td>
+                        <td>{{  $visitor->device_id }} </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4">Ziyaret Yok</td>
+                        <td colspan="4">Ziyaretçi Yok</td>
                     </tr>
                 @endforelse
                 </tbody>
@@ -35,11 +35,10 @@
         <div class="col-md-4">
             <div class="jumbotron">
                 <h2>İstatistikler</h2>
-                <p>1342 ziyaret</p>
-                <p> 104 YGS</p>
+                <p>132 farklı cihaz</p>
+                <p>194 farklı IP adresi</p>
             </div>
         </div>
-
     </div>
 </div>
 @endsection
