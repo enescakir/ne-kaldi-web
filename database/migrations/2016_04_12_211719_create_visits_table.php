@@ -14,7 +14,6 @@ class CreateVisitsTable extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('platform')->nullable();
             $table->integer('exam_id')->unsigned();
             $table->integer('visitor_id')->unsigned();
             $table->timestamps();

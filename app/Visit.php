@@ -8,7 +8,7 @@ class Visit extends Model
 {
 
     protected $fillable = [
-        'exam_id', 'platform', 'visitor_id',
+        'exam_id', 'visitor_id',
     ];
 
     public function visitor(){

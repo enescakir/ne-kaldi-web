@@ -12,7 +12,6 @@
                 <tr>
                     <th> Sınav </th>
                     <th> Tarih </th>
-                    <th> Platform </th>
                     <th> Ziyaretçi No </th>
                 </tr>
                 </thead>
@@ -21,12 +20,11 @@
                     <tr>
                         <td>{{  $visit->exam->abb }} </td>
                         <td>{{  date("d.m.Y h:m:s", strtotime($visit->created_at)) }}</td>
-                        <td>{{  $visit->platform }} </td>
                         <td>{{  $visit->visitor->id }} </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4">Ziyaret Yok</td>
+                        <td colspan="3">Ziyaret Yok</td>
                     </tr>
                 @endforelse
                 </tbody>

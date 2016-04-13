@@ -14,6 +14,9 @@
                     <th> Tarih </th>
                     <th> Ip Adresi </th>
                     <th> Cihaz No </th>
+                    <th> Platform </th>
+                    <th> Via </th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -21,12 +24,14 @@
                     <tr>
                         <td>{{  $visitor->name }} </td>
                         <td>{{  date("d.m.Y h:m:s", strtotime($visitor->created_at)) }}</td>
-                        <td>{{  $visitor->ip_adress }} </td>
+                        <td>{{  $visitor->ip_address }} </td>
                         <td>{{  $visitor->device_id }} </td>
+                        <td>{{  $visitor->platform }} </td>
+                        <td>{{  $visitor->via }} </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4">Ziyaretçi Yok</td>
+                        <td colspan="6">Ziyaretçi Yok</td>
                     </tr>
                 @endforelse
                 </tbody>

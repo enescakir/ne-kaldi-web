@@ -13,7 +13,7 @@
                     <th> Sınav </th>
                     <th> Kısaltma </th>
                     <th> Tarih </th>
-                    <th> İşlem </th>
+                    <th style="width: 100px"> İşlem </th>
                 </tr>
                 </thead>
                 <tbody>

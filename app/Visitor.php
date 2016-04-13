@@ -8,7 +8,7 @@ class Visitor extends Model
 {
 
     protected $fillable = [
-        'ip_adress', 'device_id', 'name',
+        'ip_address', 'device_id', 'name', 'platform', 'via',
     ];
 
     public function visits(){

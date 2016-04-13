@@ -19,20 +19,19 @@ class ApiController extends Controller
      * @return string
      */
     public function visit(Request $request ){
-        Log::info('Visit happenned');
         if ($request->exam_id == '0'){
             return 'Its default';
         }
 
-        $request['ip_adress'] = $request->ip();
-        $visitor = Visitor::firstOrCreate($request->only(['device_id','ip_adress']));
+        $request['ip_address'] = $request->ip();
+        $visitor = Visitor::firstOrCreate($request->only(['device_id','ip_address','platform','via']));
         $request['visitor_id'] = $visitor->id;
-        $visit = Visit::create($request->only(['visitor_id', 'exam_id','platform']));
+        $visit = Visit::create($request->only(['visitor_id', 'exam_id']));
         return 'Success';
     }
 
     public function updateName( Request $request ){
-        $visitor = Visitor::firstOrCreate( [ 'device_id' => $request->device_id, 'ip_adress'=> $request->ip() ]);
+        $visitor = Visitor::firstOrCreate( [ 'device_id' => $request->device_id, 'ip_address'=> $request->ip() ]);
         $visitor->name = $request->name;
         $visitor->save();
         return 'Success';
