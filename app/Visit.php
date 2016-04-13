@@ -16,7 +16,7 @@ class Visit extends Model
     }
 
     public function exam(){
-        return $this->hasOne('App\Exam');
+        return $this->belongsTo('App\Exam');
     }
 
 }
