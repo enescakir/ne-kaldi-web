@@ -18,7 +18,7 @@ class ApiController extends Controller
         $request['ip_adress'] = $request->ip();
         $visitor = Visitor::firstOrCreate($request->only(['device_id','ip_adress']));
         $request['visitor_id'] = $visitor->id;
-        $visit = Visit::firstOrCreate($request->only(['visitor_id', 'exam_id']));
+        $visit = Visit::firstOrCreate($request->only(['visitor_id', 'exam_id','platform']));
         return 'Success';
     }
 
