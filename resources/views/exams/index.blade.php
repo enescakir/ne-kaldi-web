@@ -6,7 +6,7 @@
     <p class="lead"> Buradan sisteme yeni sınavlar ekleyebilirsiniz. Varolan sınavları silebilirsiniz.</p>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
                 <tr>
@@ -21,7 +21,7 @@
                     <tr>
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
-                        <td>{{  date("d.m.Y h:s", strtotime($exam->date)) }}</td>
+                        <td>{{  date("d.m.Y h:m", strtotime($exam->date)) }}</td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="edit btn btn-warning">
                                 <i class="fa fa-edit" aria-hidden="true"></i>
@@ -41,7 +41,7 @@
             </table>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             {!! Form::open(['route' => 'exams.store', 'method' => 'POST']) !!}
             <div class="portlet-body">
                 <div class="form-group">

@@ -23,7 +23,7 @@
                     <tr>
                         <td>{{  $visit->name }} </td>
                         <td>{{  $visit->exam_id }} </td>
-                        <td>{{  date("d.m.Y h:s", strtotime($visit->created_at)) }}</td>
+                        <td>{{  date("d.m.Y h:m", strtotime($visit->created_at)) }}</td>
                         <td>{{  $visit->platform }} </td>
                         <td>{{  $visit->ip_adress }} </td>
                         <td>{{  $visit->device_id }} </td>
