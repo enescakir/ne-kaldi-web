@@ -14,7 +14,14 @@ class ApiController extends Controller
         return $exams;
     }
 
-    public function visit( Request $request ){
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function visit(Request $request ){
+        if ($request->exam_id == 0)
+            return 'Its default';
+
         $request['ip_adress'] = $request->ip();
         $visitor = Visitor::firstOrCreate($request->only(['device_id','ip_adress']));
         $request['visitor_id'] = $visitor->id;
