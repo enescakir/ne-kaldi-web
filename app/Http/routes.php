@@ -39,6 +39,7 @@ Route::group(['middleware' => ['web']], function () {
     });
 
     Route::auth();
+    Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
     Route::resource('exams', 'ExamController');
     Route::resource('visits', 'VisitController');
     Route::resource('visitors', 'VisitorController');

@@ -10,7 +10,7 @@ use Log;
 class ApiController extends Controller
 {
     public function exams(){
-        $exams['exams'] = Exam::orderBy('date')->get();
+        $exams['exams'] = Exam::activated()->orderBy('date')->get();
         return $exams;
     }
 

@@ -12,23 +12,28 @@
                 <tr>
                     <th> Sınav </th>
                     <th> Kısaltma </th>
-                    <th> Tarih </th>
-                    <th style="width: 100px"> İşlem </th>
+                    <th style="width: 150px"> Tarih </th>
+                    <th style="width: 150px"> İşlem </th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse ($exams as $exam)
-                    <tr>
+                    <tr class="@if ($exam->activated == 1) success @else danger @endif">
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
                         <td>{{  date("d.m.Y h:m", strtotime($exam->date)) }}</td>
                         <td>
+                            <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-primary">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </button>
+
                             <button type="button" id="exam-{{$exam->id}}" class="edit btn btn-warning">
                                 <i class="fa fa-edit" aria-hidden="true"></i>
                             </button>
                             <button type="button" id="exam-{{$exam->id}}" class="delete btn btn-danger">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
+
                         </td>
 
                     </tr>
@@ -117,6 +122,28 @@
 
             });
         });
+
+        $('.activate').click(function(){
+            var button = $(this);
+            var prefix = "exam-"
+            var id = button.attr("id").substr(prefix.length);
+            // var user_id = window.location.pathname.slice(0, -7).substr(12);
+            if (confirm( id +" numaralı sınavı onaylamak istediğınizden emin misiniz") == false) {
+                return;
+            }
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url:  "/exams/" + id + "/activate",
+                method: "POST",
+            });
+            location.reload();
+        });
+
 
     </script>
 @endsection
