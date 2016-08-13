@@ -10,9 +10,9 @@
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
                 <tr>
-                    <th> İsim </th>
+                    <th> # </th>
                     <th> Tarih </th>
-                    <th> Ip Adresi </th>
+                    <th> Bildirim </th>
                     <th> Cihaz No </th>
                     <th> Platform </th>
                     <th> Via </th>
@@ -22,9 +22,9 @@
                 <tbody>
                 @forelse ($visitors as $visitor)
                     <tr>
-                        <td>{{  $visitor->name }} </td>
+                        <td>{{  $visitor->id }} </td>
                         <td>{{  date("d.m.Y h:m:s", strtotime($visitor->created_at)) }}</td>
-                        <td>{{  $visitor->ip_address }} </td>
+                        <td>{{  $visitor->notification_token or 'Yok' }} </td>
                         <td>{{  $visitor->device_id }} </td>
                         <td>{{  $visitor->platform }} </td>
                         <td>{{  $visitor->via }} </td>
@@ -40,8 +40,7 @@
         <div class="col-md-4">
             <div class="jumbotron">
                 <h2>İstatistikler</h2>
-                <p>132 farklı cihaz</p>
-                <p>194 farklı IP adresi</p>
+                <p>{{ count($visitor) }} farklı kişi</p>
             </div>
         </div>
     </div>

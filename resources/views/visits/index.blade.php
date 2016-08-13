@@ -33,7 +33,7 @@
         <div class="col-md-4">
             <div class="jumbotron">
                 <h2>İstatistikler</h2>
-                <p>1342 ziyaret</p>
+                <p>{{ count($visits) }} ziyaret</p>
                 <p> 104 YGS</p>
             </div>
         </div>

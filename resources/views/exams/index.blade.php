@@ -140,8 +140,9 @@
             $.ajax({
                 url:  "/exams/" + id + "/activate",
                 method: "POST",
+            }).done(function() {
+                location.reload();
             });
-            location.reload();
         });
 
 
