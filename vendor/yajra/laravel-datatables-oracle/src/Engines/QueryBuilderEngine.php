@@ -3,6 +3,8 @@
 namespace Yajra\Datatables\Engines;
 
 use Closure;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
 use Yajra\Datatables\Helper;
@@ -51,11 +53,12 @@ class QueryBuilderEngine extends BaseEngine
      * Overrides global search
      *
      * @param \Closure $callback
+     * @param bool $globalSearch
      * @return $this
      */
-    public function filter(Closure $callback)
+    public function filter(Closure $callback, $globalSearch = false)
     {
-        $this->overrideGlobalSearch($callback, $this->query);
+        $this->overrideGlobalSearch($callback, $this->query, $globalSearch);
 
         return $this;
     }
@@ -79,7 +82,7 @@ class QueryBuilderEngine extends BaseEngine
      */
     public function totalCount()
     {
-        return $this->count();
+        return $this->totalRecords ? $this->totalRecords : $this->count();
     }
 
     /**
@@ -93,12 +96,22 @@ class QueryBuilderEngine extends BaseEngine
         // if its a normal query ( no union, having and distinct word )
         // replace the select with static text to improve performance
         if (! Str::contains(Str::lower($myQuery->toSql()), ['union', 'having', 'distinct', 'order by', 'group by'])) {
-            $row_count = $this->connection->getQueryGrammar()->wrap('row_count');
+            $row_count = $this->wrap('row_count');
             $myQuery->select($this->connection->raw("'1' as {$row_count}"));
         }
 
         return $this->connection->table($this->connection->raw('(' . $myQuery->toSql() . ') count_row_table'))
                                 ->setBindings($myQuery->getBindings())->count();
+    }
+
+    /**
+     * Wrap column with DB grammar.
+     *
+     * @param string $column
+     * @return string
+     */
+    protected function wrap($column) {
+        return $this->connection->getQueryGrammar()->wrap($column);
     }
 
     /**
@@ -110,7 +123,7 @@ class QueryBuilderEngine extends BaseEngine
     {
         $this->query->where(
             function ($query) {
-                $globalKeyword = $this->setupKeyword($this->request->keyword());
+                $globalKeyword = $this->request->keyword();
                 $queryBuilder  = $this->getQueryBuilder($query);
 
                 foreach ($this->request->searchableColumnIndex() as $index) {
@@ -130,7 +143,7 @@ class QueryBuilderEngine extends BaseEngine
 
                         if ($columnDef['method'] instanceof Closure) {
                             $whereQuery = $queryBuilder->newQuery();
-                            call_user_func_array($columnDef['method'], [$whereQuery, $this->request->keyword()]);
+                            call_user_func_array($columnDef['method'], [$whereQuery, $globalKeyword]);
                             $queryBuilder->addNestedWhereQuery($whereQuery, 'or');
                         } else {
                             $this->compileColumnQuery(
@@ -138,7 +151,7 @@ class QueryBuilderEngine extends BaseEngine
                                 Helper::getOrMethod($columnDef['method']),
                                 $columnDef['parameters'],
                                 $columnName,
-                                $this->request->keyword()
+                                $globalKeyword
                             );
                         }
                     } else {
@@ -155,10 +168,10 @@ class QueryBuilderEngine extends BaseEngine
                                     $globalKeyword
                                 );
                             } else {
-                                $this->compileGlobalSearch($queryBuilder, $columnName, $globalKeyword);
+                                $this->compileQuerySearch($queryBuilder, $columnName, $globalKeyword);
                             }
                         } else {
-                            $this->compileGlobalSearch($queryBuilder, $columnName, $globalKeyword);
+                            $this->compileQuerySearch($queryBuilder, $columnName, $globalKeyword);
                         }
                     }
 
@@ -238,36 +251,43 @@ class QueryBuilderEngine extends BaseEngine
     protected function compileRelationSearch($query, $relation, $column, $keyword)
     {
         $myQuery = clone $this->query;
-        $myQuery->orWhereHas($relation, function ($q) use ($column, $keyword, $query) {
-            $sql = $q->select($this->connection->raw('count(1)'))
-                     ->where($column, 'like', $keyword)
-                     ->toSql();
-            $sql = "($sql) >= 1";
-            $query->orWhereRaw($sql, [$keyword]);
+        $myQuery->orWhereHas($relation, function ($builder) use ($column, $keyword, $query) {
+            $builder->select($this->connection->raw('count(1)'));
+            $this->compileQuerySearch($builder, $column, $keyword, '');
+            $builder = "({$builder->toSql()}) >= 1";
+
+            $query->orWhereRaw($builder, [$keyword]);
         });
     }
 
     /**
-     * Add a query on global search.
+     * Compile query builder where clause depending on configurations.
      *
      * @param mixed $query
      * @param string $column
      * @param string $keyword
+     * @param string $relation
      */
-    protected function compileGlobalSearch($query, $column, $keyword)
+    protected function compileQuerySearch($query, $column, $keyword, $relation = 'or')
     {
-        if ($this->isSmartSearch()) {
-            $column = $this->castColumn($column);
-            $sql    = $column . ' LIKE ?';
-            if ($this->isCaseInsensitive()) {
-                $sql     = 'LOWER(' . $column . ') LIKE ?';
-                $keyword = Str::lower($keyword);
-            }
+        $column = strstr($column, '(') ? $this->connection->raw($column) : $column;
+        $column = $this->castColumn($column);
+        $sql    = $column . ' LIKE ?';
 
-            $query->orWhereRaw($sql, [$keyword]);
-        } else { // exact match
-            $query->orWhereRaw("$column like ?", [$keyword]);
+        if ($this->isCaseInsensitive()) {
+            $sql     = 'LOWER(' . $column . ') LIKE ?';
+            $keyword = Str::lower($keyword);
         }
+
+        if ($this->isWildcard()) {
+            $keyword = $this->wildcardLikeString($keyword);
+        }
+
+        if ($this->isSmartSearch()) {
+            $keyword = "%$keyword%";
+        }
+
+        $query->{$relation .'WhereRaw'}($sql, [$keyword]);
     }
 
     /**
@@ -278,9 +298,11 @@ class QueryBuilderEngine extends BaseEngine
      */
     public function castColumn($column)
     {
-        $column = $this->connection->getQueryGrammar()->wrap($column);
+        $column = $this->wrap($column);
         if ($this->database === 'pgsql') {
             $column = 'CAST(' . $column . ' as TEXT)';
+        } elseif ($this->database === 'firebird') {
+            $column = 'CAST(' . $column . ' as VARCHAR(255))';
         }
 
         return $column;
@@ -332,15 +354,8 @@ class QueryBuilderEngine extends BaseEngine
                     }
                 }
 
-                $column          = $this->castColumn($column);
-                $keyword         = $this->getSearchKeyword($index);
-                $caseInsensitive = $this->isCaseInsensitive();
-
-                if (! $caseInsensitive) {
-                    $column = strstr($column, '(') ? $this->connection->raw($column) : $column;
-                }
-
-                $this->compileColumnSearch($index, $column, $keyword, $caseInsensitive);
+                $keyword = $this->getSearchKeyword($index);
+                $this->compileColumnSearch($index, $column, $keyword);
             }
 
             $this->isFilterApplied = true;
@@ -370,18 +385,14 @@ class QueryBuilderEngine extends BaseEngine
      * @param int $i
      * @param mixed $column
      * @param string $keyword
-     * @param bool $caseSensitive
      */
-    protected function compileColumnSearch($i, $column, $keyword, $caseSensitive = true)
+    protected function compileColumnSearch($i, $column, $keyword)
     {
         if ($this->request->isRegex($i)) {
-            $this->regexColumnSearch($column, $keyword, $caseSensitive);
-        } elseif ($this->isSmartSearch()) {
-            $sql     = $caseSensitive ? $column . ' LIKE ?' : 'LOWER(' . $column . ') LIKE ?';
-            $keyword = $caseSensitive ? $keyword : Str::lower($keyword);
-            $this->query->whereRaw($sql, [$keyword]);
-        } else { // exact match
-            $this->query->whereRaw("$column LIKE ?", [$keyword]);
+            $column = strstr($column, '(') ? $this->connection->raw($column) : $column;
+            $this->regexColumnSearch($column, $keyword);
+        } else {
+            $this->compileQuerySearch($this->query, $column, $keyword, '');
         }
     }
 
@@ -390,15 +401,14 @@ class QueryBuilderEngine extends BaseEngine
      *
      * @param mixed $column
      * @param string $keyword
-     * @param bool $caseSensitive
      */
-    protected function regexColumnSearch($column, $keyword, $caseSensitive = true)
+    protected function regexColumnSearch($column, $keyword)
     {
         if ($this->isOracleSql()) {
-            $sql = $caseSensitive ? 'REGEXP_LIKE( ' . $column . ' , ? )' : 'REGEXP_LIKE( LOWER(' . $column . ') , ?, \'i\' )';
+            $sql = ! $this->isCaseInsensitive() ? 'REGEXP_LIKE( ' . $column . ' , ? )' : 'REGEXP_LIKE( LOWER(' . $column . ') , ?, \'i\' )';
             $this->query->whereRaw($sql, [$keyword]);
         } else {
-            $sql = $caseSensitive ? $column . ' REGEXP ?' : 'LOWER(' . $column . ') REGEXP ?';
+            $sql = ! $this->isCaseInsensitive() ? $column . ' REGEXP ?' : 'LOWER(' . $column . ') REGEXP ?';
             $this->query->whereRaw($sql, [Str::lower($keyword)]);
         }
     }
@@ -459,20 +469,45 @@ class QueryBuilderEngine extends BaseEngine
      */
     protected function joinEagerLoadedColumn($relation, $relationColumn)
     {
-        $table   = $this->query->getRelation($relation)->getRelated()->getTable();
-        $foreign = $this->query->getRelation($relation)->getQualifiedForeignKey();
-        $other   = $this->query->getRelation($relation)->getQualifiedOtherKeyName();
-        $column  = $table . '.' . $relationColumn;
-
         $joins = [];
         foreach ((array) $this->getQueryBuilder()->joins as $key => $join) {
             $joins[] = $join->table;
         }
 
-        if (! in_array($table, $joins)) {
-            $this->getQueryBuilder()
-                 ->leftJoin($table, $foreign, '=', $other);
+        $model = $this->query->getRelation($relation);
+        if ($model instanceof BelongsToMany) {
+            $pivot   = $model->getTable();
+            $pivotPK = $model->getForeignKey();
+            $pivotFK = $model->getQualifiedParentKeyName();
+
+            if (! in_array($pivot, $joins)) {
+                $this->getQueryBuilder()->leftJoin($pivot, $pivotPK, '=', $pivotFK);
+            }
+
+            $related = $model->getRelated();
+            $table   = $related->getTable();
+            $tablePK = $related->getForeignKey();
+            $tableFK = $related->getQualifiedKeyName();
+
+            if (! in_array($table, $joins)) {
+                $this->getQueryBuilder()->leftJoin($table, $pivot . '.' . $tablePK, '=', $tableFK);
+            }
+        } else {
+            $table = $model->getRelated()->getTable();
+            if ($model instanceof HasOne) {
+                $foreign = $model->getForeignKey();
+                $other   = $model->getQualifiedParentKeyName();
+            } else {
+                $foreign = $model->getQualifiedForeignKey();
+                $other   = $model->getQualifiedOtherKeyName();
+            }
+
+            if (! in_array($table, $joins)) {
+                $this->getQueryBuilder()->leftJoin($table, $foreign, '=', $other);
+            }
         }
+
+        $column = $table . '.' . $relationColumn;
 
         return $column;
     }

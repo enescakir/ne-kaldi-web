@@ -49,16 +49,33 @@ Require this package in your `composer.json` and update composer. This will down
 "maatwebsite/excel": "~2.1.0"
 ```
 
+For Laravel 5.2 use you have to install the [laravelcollective/bus](https://laravelcollective.com/docs/5.2/bus#installation) package. 
+Add this to the `composer.json` and update composer:
+
+```php
+"laravelcollective/bus": "^5.2"
+```
+
+Then add the following lines to the `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    Collective\Bus\BusServiceProvider::class,
+    // ...
+  ],
+```
+
 After updating composer, add the ServiceProvider to the providers array in `config/app.php`
 
 ```php
-'Maatwebsite\Excel\ExcelServiceProvider',
+Maatwebsite\Excel\ExcelServiceProvider::class,
 ```
 
 You can use the facade for shorter code. Add this to your aliases:
 
 ```php
-'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 ```
 
 The class is bound to the ioC as `excel`

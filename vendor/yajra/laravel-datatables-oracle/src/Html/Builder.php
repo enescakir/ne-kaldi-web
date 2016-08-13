@@ -8,6 +8,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 /**
@@ -159,15 +160,34 @@ class Builder
     {
         $parameters = (new Parameters($attributes))->toArray();
 
+        list($ajaxDataFunction, $parameters) = $this->encodeAjaxDataFunction($parameters);
         list($columnFunctions, $parameters) = $this->encodeColumnFunctions($parameters);
         list($callbackFunctions, $parameters) = $this->encodeCallbackFunctions($parameters);
 
         $json = json_encode($parameters);
 
+        $json = $this->decodeAjaxDataFunction($ajaxDataFunction, $json);
         $json = $this->decodeColumnFunctions($columnFunctions, $json);
         $json = $this->decodeCallbackFunctions($callbackFunctions, $json);
 
         return $json;
+    }
+
+    /**
+     * Encode ajax data function param.
+     *
+     * @param array $parameters
+     * @return mixed
+     */
+    protected function encodeAjaxDataFunction($parameters)
+    {
+        $ajaxData = '';
+        if (isset($parameters['ajax']['data'])) {
+            $ajaxData                   = $parameters['ajax']['data'];
+            $parameters['ajax']['data'] = "#ajax_data#";
+        }
+
+        return [$ajaxData, $parameters];
     }
 
     /**
@@ -182,6 +202,7 @@ class Builder
         foreach ($parameters['columns'] as $i => $column) {
             unset($parameters['columns'][$i]['exportable']);
             unset($parameters['columns'][$i]['printable']);
+            unset($parameters['columns'][$i]['footer']);
 
             if (isset($column['render'])) {
                 $columnFunctions[$i]                 = $column['render'];
@@ -229,6 +250,18 @@ class Builder
     }
 
     /**
+     * Decode ajax data method.
+     *
+     * @param string $function
+     * @param string $json
+     * @return string
+     */
+    protected function decodeAjaxDataFunction($function, $json)
+    {
+        return str_replace("\"#ajax_data#\"", $function, $json);
+    }
+
+    /**
      * Decode columns render functions.
      *
      * @param array $columnFunctions
@@ -270,6 +303,55 @@ class Builder
         return $this->view->make(
             $this->template ?: $this->config->get('datatables.script_template', 'datatables::script')
         )->render();
+    }
+
+    /**
+     * Sets HTML table attribute(s).
+     *
+     * @param string|array $attribute
+     * @param mixed $value
+     * @return $this
+     */
+    public function setTableAttribute($attribute, $value = null)
+    {
+        if (is_array($attribute)) {
+            $this->setTableAttributes($attribute);
+        } else {
+            $this->tableAttributes[$attribute] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets multiple HTML table attributes at once.
+     *
+     * @param array $attributes
+     * @return $this
+     */
+    public function setTableAttributes(array $attributes)
+    {
+        foreach ($attributes as $attribute => $value) {
+            $this->setTableAttribute($attribute, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Retrieves HTML table attribute value.
+     *
+     * @param string $attribute
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getTableAttribute($attribute)
+    {
+        if (! array_key_exists($attribute, $this->tableAttributes)) {
+            throw new \Exception("Table attribute '{$attribute}' does not exist.");
+        }
+
+        return $this->tableAttributes[$attribute];
     }
 
     /**
@@ -396,6 +478,33 @@ class Builder
             'searchable'     => false,
             'exportable'     => false,
             'printable'      => true,
+            'footer'         => '',
+        ], $attributes);
+        $this->collection->push(new Column($attributes));
+
+        return $this;
+    }
+
+    /**
+     * Add a index column.
+     *
+     * @param  array $attributes
+     * @return $this
+     */
+    public function addIndex(array $attributes = [])
+    {
+        $indexColumn = Config::get('datatables.index_column', 'DT_Row_Index');
+        $attributes  = array_merge([
+            'defaultContent' => '',
+            'data'           => $indexColumn,
+            'name'           => $indexColumn,
+            'title'          => '',
+            'render'         => null,
+            'orderable'      => false,
+            'searchable'     => false,
+            'exportable'     => false,
+            'printable'      => true,
+            'footer'         => '',
         ], $attributes);
         $this->collection->push(new Column($attributes));
 
@@ -418,14 +527,59 @@ class Builder
     /**
      * Generate DataTable's table html.
      *
-     * @param  array $attributes
+     * @param array $attributes
+     * @param bool $drawFooter
      * @return string
      */
-    public function table(array $attributes = [])
+    public function table(array $attributes = [], $drawFooter = false)
     {
         $this->tableAttributes = array_merge($this->tableAttributes, $attributes);
 
-        return '<table ' . $this->html->attributes($this->tableAttributes) . '></table>';
+        $th       = $this->compileTableHeaders();
+        $htmlAttr = $this->html->attributes($this->tableAttributes);
+
+        $tableHtml = '<table ' . $htmlAttr . '>';
+        $tableHtml .= '<thead><tr>' . implode('', $th) . '</tr></thead>';
+        if ($drawFooter) {
+            $tf = $this->compileTableFooter();
+            $tableHtml .= '<tfoot><tr>' . implode('', $tf) . '</tr></tfoot>';
+        }
+        $tableHtml .= '</table>';
+
+        return $tableHtml;
+    }
+
+    /**
+     * Compile table headers and to support responsive extension.
+     *
+     * @return array
+     */
+    private function compileTableHeaders()
+    {
+        $th = [];
+        foreach ($this->collection->toArray() as $row) {
+            $thAttr = $this->html->attributes(
+                array_only($row, ['class', 'id', 'width', 'style', 'data-class', 'data-hide'])
+            );
+            $th[]   = '<th ' . $thAttr . '>' . $row['title'] . '</th>';
+        }
+
+        return $th;
+    }
+
+    /**
+     * Compile table footer contents.
+     *
+     * @return array
+     */
+    private function compileTableFooter()
+    {
+        $footer = [];
+        foreach ($this->collection->toArray() as $row) {
+            $footer[] = '<th>' . $row['footer'] . '</th>';
+        }
+
+        return $footer;
     }
 
     /**

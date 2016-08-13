@@ -16,10 +16,11 @@
 
 
 
-Route::group(['prefix' => 'api'], function () {
+Route::group(['prefix' => 'api/v1'], function () {
     Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
+    Route::post('/subscribe', array('as' => 'api.subscribe', 'uses' => 'ApiController@subscribe'));
+    Route::post('/unsubscribe', array('as' => 'api.unsubscribe', 'uses' => 'ApiController@unsubscribe'));
     Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
-    Route::post('/name/update', array('as' => 'api.name.update', 'uses' => 'ApiController@updateName'));
 });
 
 /*

@@ -15,7 +15,7 @@ class CreateVisitorsTable extends Migration
         Schema::create('visitors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('ip_address');
+            $table->string('notification_token')->nullable();
             $table->string('device_id')->nullable();
             $table->string('platform')->nullable();
             $table->string('via')->nullable();
