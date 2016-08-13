@@ -101,7 +101,7 @@ class ExamController extends Controller
     {
         $exam = Exam::find($id);
         $exam->activated = !($exam->activated);
-        $exam->save;
+        $exam->save();
         return 'Success';
 
     }

@@ -17,11 +17,17 @@ class CreateExamsTable extends Migration
             $table->string('name');
             $table->string('abb');
             $table->dateTime('date');
-            $table->integer('created_by')->unsigned()->nullable();
             $table->boolean('activated')->default(false);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->integer('created_by')->unsigned()->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
+            $table->integer('deleted_by')->unsigned()->nullable();
 
             $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
 
         });
     }
