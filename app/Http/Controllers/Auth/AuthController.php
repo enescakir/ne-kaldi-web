@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
-use Session;
+use Session, Auth;
 
 class AuthController extends Controller
 {
@@ -79,7 +79,7 @@ class AuthController extends Controller
 
         $newUser = $this->create($request->all());
         Session::put('flash_message', 'Üyeliğiniz onayladıktan sonra giriş yapabilirsiniz.');
-        return redirect($this->redirectPath());
+        return redirect('/login');
     }
 
     /**
