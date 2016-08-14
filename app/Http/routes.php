@@ -16,11 +16,13 @@
 
 
 
-Route::group(['prefix' => 'api/v1'], function () {
-    Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
-    Route::post('/subscribe', array('as' => 'api.subscribe', 'uses' => 'ApiController@subscribe'));
-    Route::post('/unsubscribe', array('as' => 'api.unsubscribe', 'uses' => 'ApiController@unsubscribe'));
-    Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
+Route::group(['prefix' => 'api'], function () {
+    Route::group(['prefix' => 'v1'], function () {
+        Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
+        Route::post('/subscribe', array('as' => 'api.subscribe', 'uses' => 'ApiController@subscribe'));
+        Route::post('/unsubscribe', array('as' => 'api.unsubscribe', 'uses' => 'ApiController@unsubscribe'));
+        Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
+    });
 });
 
 /*
@@ -33,16 +35,13 @@ Route::group(['prefix' => 'api/v1'], function () {
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
-    Route::auth();
-    Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
-    Route::resource('exams', 'ExamController');
-    Route::resource('visits', 'VisitController');
-    Route::resource('visitors', 'VisitorController');
-
+Route::get('/', function () {
+    return view('welcome');
 });
+
+Route::auth();
+Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
+Route::resource('exams', 'ExamController');
+Route::resource('visits', 'VisitController');
+Route::resource('visitors', 'VisitorController');
