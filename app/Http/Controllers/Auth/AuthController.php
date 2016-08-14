@@ -58,7 +58,7 @@ class AuthController extends Controller
                 Auth::logout();
                 return back()->withInput($request->only('email', 'remember'));
             } else {
-                return redirect()->route('exams');
+                return redirect()->route('exam');
             }
         } else {
             Session::flash('flash_message', 'Giriş bilgilerinizde bir problem var.');
