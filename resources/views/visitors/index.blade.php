@@ -40,7 +40,7 @@
         <div class="col-md-4">
             <div class="jumbotron">
                 <h2>İstatistikler</h2>
-                <p>{{ count($visitor) }} farklı kişi</p>
+                <p>{{ count($visitors) }} farklı kişi</p>
             </div>
         </div>
     </div>
