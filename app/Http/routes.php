@@ -36,9 +36,7 @@ Route::group(['prefix' => 'api'], function () {
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontController@home')->name('home');
 
 Route::auth();
 Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
