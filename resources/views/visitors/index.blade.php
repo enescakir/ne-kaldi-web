@@ -24,7 +24,11 @@
                     <tr>
                         <td>{{  $visitor->id }} </td>
                         <td>{{  date("d.m.Y h:m:s", strtotime($visitor->created_at)) }}</td>
-                        <td>{{  $visitor->notification_token or 'Yok' }} </td>
+                        @if($visitor->notification_token)
+                            <td>Var</td>
+                        @else
+                            <td>Yok</td>
+                        @endif
                         <td>{{  $visitor->device_id }} </td>
                         <td>{{  $visitor->platform }} </td>
                         <td>{{  $visitor->via }} </td>
