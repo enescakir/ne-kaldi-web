@@ -53,7 +53,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $currentUser = Auth::user();
-            if ($currentUser->approved == 0) {
+            if ($currentUser->activated == 0) {
                 Session::flash('flash_message','Hesabınız daha onaylanmadı.');
                 Auth::logout();
                 return back()->withInput($request->only('email', 'remember'));
