@@ -7,6 +7,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
+                    @if (Session::has('flash_message'))
+                        <div class="alert alert-info fade in">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                            {{ Session::pull('flash_message') }}
+                        </div>
+                    @endif
+
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {!! csrf_field() !!}
 

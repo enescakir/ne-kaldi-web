@@ -40,6 +40,46 @@ class AuthController extends Controller
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            $currentUser = Auth::user();
+            if ($currentUser->approved == 0) {
+                Session::flash('flash_message','Hesabınız daha onaylanmadı.');
+                Auth::logout();
+                return back()->withInput($request->only('email', 'remember'));
+            } else {
+                return redirect()->route('exams');
+            }
+        } else {
+            Session::flash('flash_message', 'Giriş bilgilerinizde bir problem var.');
+            return back()->withInput($request->only('email', 'remember'));
+        }
+    }
+
+
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $newUser = $this->create($request->all());
+        Session::put('flash_message', 'Üyeliğiniz onayladıktan sonra giriş yapabilirsiniz.');
+        return redirect($this->redirectPath());
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
