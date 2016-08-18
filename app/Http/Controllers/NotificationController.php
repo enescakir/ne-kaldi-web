@@ -41,14 +41,18 @@ class NotificationController extends Controller
         $devicesArray = [];
         foreach ($visitors as $visitor) {
             if ($visitor->notification_token != null) {
-                array_push($devicesArray, PushNotification::Device($visitor->notification_token));
+//                array_push($devicesArray, PushNotification::Device($visitor->notification_token));
+                PushNotification::app('appNameIOS')
+                    ->to($visitor->notification_token)
+                    ->send($notification->message);
+
             }
         }
 
-        $devices = PushNotification::DeviceCollection($devicesArray);
-        PushNotification::app('appNameIOS')
-            ->to($devices)
-            ->send($notification->message);
+//        $devices = PushNotification::DeviceCollection($devicesArray);
+//        PushNotification::app('appNameIOS')
+//            ->to($devices)
+//            ->send($notification->message);
         $notification->sent_at = Carbon::now();
         $notification->save();
         return [ 'Success' => 'Başarıyla gönderildi.' ];
