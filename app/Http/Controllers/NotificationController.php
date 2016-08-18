@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Visitor;
 use PushNotification;
 use Carbon\Carbon;
+use Log;
 
 class NotificationController extends Controller
 {
@@ -45,7 +46,7 @@ class NotificationController extends Controller
                 PushNotification::app('appNameIOS')
                     ->to($visitor->notification_token)
                     ->send($notification->message);
-
+                Log::info( $visitor->id . " => notification sent.");
             }
         }
 
