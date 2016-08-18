@@ -18,8 +18,8 @@ class CreateVisitsTable extends Migration
             $table->integer('visitor_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('exam_id')->references('id')->on('exams');
-            $table->foreign('visitor_id')->references('id')->on('visitors');
+            $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
+            $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');
 
         });
 
