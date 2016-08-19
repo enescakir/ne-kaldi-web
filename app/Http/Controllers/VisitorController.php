@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Visitor;
+use App\Visitor, DB;
+
 class VisitorController extends Controller
 {
     /**
@@ -25,8 +26,13 @@ class VisitorController extends Controller
      */
     public function index()
     {
-        $visitors = Visitor::orderBy('created_at')->get();
-        return view('visitors.index', compact('visitors'));
+        $visitors = Visitor::orderBy('created_at')->paginate(15);
+        $visitorDevices = DB::table('visitors')
+            ->select('via', DB::raw('count(*) as total'))
+            ->groupBy('via')
+            ->orderBy('total', 'desc')
+            ->get();
+        return view('visitors.index', compact(['visitors', 'visitorDevices']));
 
     }
 

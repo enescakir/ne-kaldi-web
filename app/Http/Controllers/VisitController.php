@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exam;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,7 +28,8 @@ class VisitController extends Controller
     public function index()
     {
         $visits = Visit::orderBy('created_at')->with('exam','visitor')->get();
-        return view('visits.index', compact('visits'));
+        $exams = Exam::withCount('visits')->orderBy('visits_count', 'desc')->get();
+        return view('visits.index', compact(['visits', 'exams']));
 
     }
 

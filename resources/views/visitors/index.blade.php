@@ -40,11 +40,15 @@
                 @endforelse
                 </tbody>
             </table>
+            {{ $visitors->links() }}
         </div>
         <div class="col-md-4">
             <div class="jumbotron">
                 <h2>İstatistikler</h2>
-                <p>{{ count($visitors) }} farklı kişi</p>
+                <p>{{ $visitors->total() }} farklı kişi</p>
+                @foreach( $visitorDevices as $visitorDevice)
+                    <p>{{ $visitorDevice->total . ' ' . $visitorDevice->via }}</p>
+                @endforeach
             </div>
         </div>
     </div>

@@ -40,4 +40,8 @@ class Exam extends Model
         $query->where('activated',1);
     }
 
+    public function visits(){
+        return $this->hasMany('App\Visit');
+    }
+
 }
