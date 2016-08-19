@@ -13,6 +13,7 @@
                     <th> Sınav </th>
                     <th> Kısaltma </th>
                     <th style="width: 150px"> Tarih </th>
+                    <th> Gösterim </th>
                     <th style="width: 150px"> İşlem </th>
                 </tr>
                 </thead>
@@ -22,6 +23,7 @@
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
                         <td>{{  date("d.m.Y h:m", strtotime($exam->date)) }}</td>
+                        <td>{{  $exam->visits_count }} </td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-primary">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>

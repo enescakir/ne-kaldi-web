@@ -26,7 +26,7 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::orderBy('date')->get();
+        $exams = Exam::withCount('visits')->orderBy('date')->get();
         return view('exams.index', compact('exams'));
     }
 

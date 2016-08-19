@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Visit;
+use DB;
 
 class VisitController extends Controller
 {
