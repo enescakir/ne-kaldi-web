@@ -40,13 +40,15 @@ class NotificationController extends Controller
         $notification = Notification::find($id);
         $visitors = Visitor::all();
         $devicesArray = [];
+        $counter = 1;
         foreach ($visitors as $visitor) {
             if ($visitor->notification_token != null) {
 //                array_push($devicesArray, PushNotification::Device($visitor->notification_token));
                 PushNotification::app('appNameIOS')
                     ->to($visitor->notification_token)
                     ->send($notification->message);
-                Log::info( $visitor->id . " => notification sent.");
+                Log::info( $visitor->id . " => notification sent. ". $counter ."/" . count($visitors));
+                $counter = $counter + 1;
             }
         }
 

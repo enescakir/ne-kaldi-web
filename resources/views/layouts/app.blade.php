@@ -79,6 +79,30 @@
         </div>
     </nav>
 
+    <div class="container">
+        @if (Session::has('success_message'))
+            <div class="alert alert-success fade in">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                {{ Session::pull('success_message') }}
+            </div>
+        @endif
+        @if (Session::has('info_message'))
+            <div class="alert alert-success fade in">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                {{ Session::pull('info_message') }}
+            </div>
+        @endif
+        @if (Session::has('error_message'))
+            <div class="alert alert-success fade in">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                {{ Session::pull('error_message') }}
+            </div>
+        @endif
+    </div>
+
     @yield('content')
 
     <!-- JavaScripts -->

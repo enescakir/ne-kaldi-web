@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Exam;
+use Carbon\Carbon;
+use Session;
 
 class ExamController extends Controller
 {
@@ -26,8 +28,9 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::withCount('visits')->orderBy('date')->get();
-        return view('exams.index', compact('exams'));
+        $exams = Exam::withCount('visits')->orderBy('date')->where('date', '>', Carbon::now())->get();
+        $passed_exams = Exam::withCount('visits')->orderBy('date')->where('date', '<=', Carbon::now())->get();
+        return view('exams.index', compact(['exams', 'passed_exams']));
     }
 
     /**
@@ -37,7 +40,7 @@ class ExamController extends Controller
      */
     public function create()
     {
-        //
+        return view('exams.create');
     }
 
     /**
@@ -53,7 +56,8 @@ class ExamController extends Controller
         $exam->abb = $request->input('abb');
         $exam->date = $request->input('date');
         $exam->save();
-        return back();
+        Session::flash('success_message','<strong>' . $exam->name . '</strong> başarıyla eklendi.');
+        return redirect()->route('exams.index');
     }
 
     /**
@@ -75,7 +79,8 @@ class ExamController extends Controller
      */
     public function edit($id)
     {
-        //
+        $exam = Exam::find($id);
+        return view('exams.edit', compact(['exam']));
     }
 
     /**
@@ -87,7 +92,13 @@ class ExamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $exam = Exam::find($id);
+        $exam->name = $request->input('name');
+        $exam->abb = $request->input('abb');
+        $exam->date = $request->input('date');
+        $exam->save();
+        Session::flash('success_message', '<strong>' . $exam->name . '</strong> başarıyla düzenlendi.');
+        return redirect()->route('exams.index');
     }
 
     /**

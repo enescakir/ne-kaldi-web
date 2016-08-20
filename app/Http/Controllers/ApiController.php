@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Exam, App\Visit, App\Visitor;
-use Log;
+use Log, Carbon\Carbon;
 class ApiController extends Controller
 {
     public function exams(){
-        $exams['exams'] = Exam::activated()->orderBy('date')->get();
+        $exams['exams'] = Exam::activated()->orderBy('date')->where('date', '>=', Carbon::now())->get();
         return $exams;
     }
 
