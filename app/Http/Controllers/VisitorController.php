@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Visitor, DB;
+use App\Visitor, App\Visit, DB;
 
 class VisitorController extends Controller
 {
@@ -34,6 +34,20 @@ class VisitorController extends Controller
             ->get();
         return view('visitors.index', compact(['visitors', 'visitorDevices']));
 
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $visitor = Visitor::find($id);
+        $visitor->visits()->delete();
+        $visitor->delete();
+        return 'Success';
     }
 
 }
