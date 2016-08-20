@@ -22,7 +22,7 @@
                     <tr class="@if ($exam->activated == 1) success @else danger @endif">
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
-                        <td>{{  date("d.m.Y h:m", strtotime($exam->date)) }}</td>
+                        <td>{{  date("d.m.Y h:i", strtotime($exam->date)) }}</td>
                         <td>{{  $exam->visits_count }} </td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-primary">
