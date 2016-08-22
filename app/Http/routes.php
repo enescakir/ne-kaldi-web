@@ -42,6 +42,9 @@ Route::auth();
 Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
 Route::resource('exams', 'ExamController');
 Route::resource('visits', 'VisitController');
+
+Route::get('visitors/statistics', 'VisitorController@statistics')->name('visitors.statistics');
 Route::resource('visitors', 'VisitorController');
+
 Route::resource('notification', 'NotificationController');
 Route::post('notification/{id}/send', 'NotificationController@send')->name('notification.send');

@@ -26,14 +26,32 @@ class VisitorController extends Controller
      */
     public function index()
     {
-        $visitors = Visitor::orderBy('created_at')->paginate(15);
+        $visitors = Visitor::orderBy('created_at')->paginate(25);
+        return view('visitors.index', compact(['visitors']));
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function statistics()
+    {
+        $visitorsCount = Visitor::count();
+        $visitorsDaily = Visitor::groupBy('date')
+            ->orderBy('date')
+            ->get(array(
+                DB::raw('DATE(`created_at`) AS `date`'),
+                DB::raw('COUNT(*) as `value`')
+            ));
         $visitorDevices = DB::table('visitors')
             ->select('via', DB::raw('count(*) as total'))
             ->groupBy('via')
             ->orderBy('total', 'desc')
             ->get();
-        return view('visitors.index', compact(['visitors', 'visitorDevices']));
 
+        return view('visitors.statistics', compact(['visitorsCount', 'visitorDevices', 'visitorsDaily']));
     }
 
     /**

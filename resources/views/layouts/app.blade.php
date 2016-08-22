@@ -28,6 +28,8 @@
             margin-right: 6px;
         }
     </style>
+    @yield('page-styles')
+
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default navbar-static-top">
@@ -53,7 +55,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ route('exams.index') }}">Sınavlar</a></li>
                     <li><a href="{{ route('visits.index') }}">Ziyaretler</a></li>
-                    <li><a href="{{ route('visitors.index') }}">Ziyaretçiler</a></li>
+                    <li><a href="{{ route('visitors.statistics') }}">Ziyaretçiler</a></li>
                     <li><a href="{{ route('notification.index') }}">Bildirimler</a></li>
                 </ul>
 
@@ -110,8 +112,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
     <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
     <script src="https://www.amcharts.com/lib/3/pie.js"></script>
     <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src="https://www.amcharts.com/lib/3/lang/tr.js"></script>
 
     @yield('page-scripts')
 

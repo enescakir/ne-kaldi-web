@@ -2,11 +2,15 @@
 
 @section('content')
     <div class="container">
-    <h1>Ziyaretçiler</h1>
-    <p class="lead"> Sistemi kullanan kişiler</p>
+    <h1>Ziyaretçiler
+        <a type="button" href="{{ route('visitors.statistics') }}" class="btn btn-primary pull-right">
+            <i class="glyphicon glyphicon-signal"></i> İstatistikler
+        </a>
+    </h1>
+    <p class="lead"> Uygulamamızı indiren kişilerin listesi</p>
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
                 <tr>
@@ -47,24 +51,6 @@
                 </tbody>
             </table>
             {{ $visitors->links() }}
-        </div>
-        <div class="col-md-3">
-            <div class="alert alert-info">
-                <h2><strong>İstatistikler</strong></h2>
-                <table style="width: 100%">
-                    <tr>
-                        <td style="text-align: right; padding-right: 5px;"><h3><strong>{{ $visitors->total() }}</strong></h3></td>
-                        <td><h3> farklı kişi</h3></td>
-                    </tr>
-                @foreach( $visitorDevices as $visitorDevice)
-                        <tr>
-                            <td style="text-align: right; padding-right: 5px;"><strong>{{ $visitorDevice->total }}</strong></td>
-                            <td>{{ $visitorDevice->via }}</td>
-                        </tr>
-                    @endforeach
-                </table>
-
-            </div>
         </div>
     </div>
 </div>
