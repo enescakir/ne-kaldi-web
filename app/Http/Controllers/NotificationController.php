@@ -51,6 +51,7 @@ class NotificationController extends Controller
                 $counter = $counter + 1;
             }
         }
+        Log::info("Notifications sending is successful");
 
 //        $devices = PushNotification::DeviceCollection($devicesArray);
 //        PushNotification::app('appNameIOS')
