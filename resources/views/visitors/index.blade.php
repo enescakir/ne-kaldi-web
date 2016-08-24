@@ -20,6 +20,7 @@
                     <th> Cihaz No </th>
                     <th> Platform </th>
                     <th> Via </th>
+                    <th> Ziyaret </th>
                     <th style="width: 50px"> İşlem </th>
                 </tr>
                 </thead>
@@ -36,6 +37,7 @@
                         <td>{{  $visitor->device_id }} </td>
                         <td>{{  $visitor->platform }} </td>
                         <td>{{  $visitor->via }} </td>
+                        <td>{{  $visitor->visits_count }} </td>
                         <td>
                             <button type="button" id="visitor-{{$visitor->id}}" class="delete btn btn-danger">
                                 <i class="fa fa-trash" aria-hidden="true"></i>

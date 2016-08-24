@@ -26,9 +26,8 @@ class VisitorController extends Controller
      */
     public function index()
     {
-        $visitors = Visitor::orderBy('created_at')->paginate(25);
+        $visitors = Visitor::orderBy('visits_count', 'DESC')->withCount('visits')->paginate(25);
         return view('visitors.index', compact(['visitors']));
-
     }
 
     /**
