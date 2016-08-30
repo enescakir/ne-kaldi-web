@@ -16,8 +16,8 @@
                 <tr>
                     <th> Sınav </th>
                     <th> Kısaltma </th>
-                    <th style="width: 150px"> Tarih </th>
-                    <th> Gösterim </th>
+                    <th> Tarih </th>
+                    <th style="width: 60px"> F/G </th>
                     <th style="width: 150px"> İşlem </th>
                 </tr>
                 </thead>
@@ -27,7 +27,7 @@
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
                         <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }}</td>
-                        <td>{{  $exam->visits_count }} </td>
+                        <td>{{  $exam->favorites_count }} / {{  $exam->visits_count }} </td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-info">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -58,9 +58,9 @@
                 <tr>
                     <th> Sınav </th>
                     <th> Kısaltma </th>
-                    <th style="width: 150px"> Tarih </th>
-                    <th> Gösterim </th>
-                    <th style="width: 150px"> İşlem </th>
+                    <th> Tarih </th>
+                    <th style="width: 60px"> F/G </th>
+                    <th style="width: 150px!important;"> İşlem </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,7 +69,7 @@
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
                         <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }}</td>
-                        <td>{{  $exam->visits_count }} </td>
+                        <td>{{  $exam->favorites_count }} / {{  $exam->visits_count }} </td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-info">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>

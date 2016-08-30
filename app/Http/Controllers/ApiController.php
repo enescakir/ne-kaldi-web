@@ -75,6 +75,8 @@ class ApiController extends Controller
         if ($favorite == null) {
             $favorite = Favorite::create($request->only(['visitor_id', 'exam_id']));
         }
+        $favorite->save();
+
         if ($request->favorite == 1) {
             if ($favorite->trashed()) {
                 $favorite->restore();
@@ -83,8 +85,6 @@ class ApiController extends Controller
         else if ($request->favorite == 0) {
             $favorite->delete();
         }
-        $favorite->save();
-
         return 'Success';
     }
 

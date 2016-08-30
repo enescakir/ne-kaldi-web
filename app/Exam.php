@@ -44,4 +44,8 @@ class Exam extends Model
         return $this->hasMany('App\Visit');
     }
 
+    public function favorites(){
+        return $this->hasMany('App\Favorite');
+    }
+
 }

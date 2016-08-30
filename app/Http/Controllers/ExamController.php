@@ -28,8 +28,8 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::withCount('visits')->orderBy('date')->where('date', '>', Carbon::now())->get();
-        $passed_exams = Exam::withCount('visits')->orderBy('date')->where('date', '<=', Carbon::now())->get();
+        $exams = Exam::withCount('visits', 'favorites')->orderBy('date')->where('date', '>', Carbon::now())->get();
+        $passed_exams = Exam::withCount('visits', 'favorites')->orderBy('date')->where('date', '<=', Carbon::now())->get();
         return view('exams.index', compact(['exams', 'passed_exams']));
     }
 

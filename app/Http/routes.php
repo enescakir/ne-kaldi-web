@@ -41,10 +41,12 @@ Route::get('/', 'FrontController@home')->name('home');
 
 Route::auth();
 Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
+
 Route::resource('exams', 'ExamController');
 Route::resource('visits', 'VisitController');
 
 Route::get('visitors/statistics', 'VisitorController@statistics')->name('visitors.statistics');
+Route::get('/visitors/data', array('as' => 'visitors.index.data', 'uses' => 'VisitorController@indexData'));
 Route::resource('visitors', 'VisitorController');
 
 Route::resource('notification', 'NotificationController');

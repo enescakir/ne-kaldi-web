@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Visitor, App\Visit, DB;
+use App\Visitor, App\Visit, DB, Datatables;
 
 class VisitorController extends Controller
 {
@@ -26,9 +26,25 @@ class VisitorController extends Controller
      */
     public function index()
     {
-        $visitors = Visitor::orderBy('visits_count', 'DESC')->withCount('visits')->paginate(25);
+        $visitors = Visitor::orderBy('visits_count', 'DESC')->withCount('visits', 'favorites')->paginate(25);
         return view('visitors.index', compact(['visitors']));
     }
+
+    public function indexData()
+    {
+        return Datatables::of(Visitor::orderBy('visits_count', 'DESC')->withCount('visits', 'favorites')->get())
+            ->addColumn('operations','<a class="delete btn btn-danger btn-sm" href="javascript:;"><i class="fa fa-trash"></i> </a>')
+            ->editColumn('notification_token', '@if($notification_token != null)
+                                                     <td>Var</td> 
+                                                @endif
+                                                @if ($notification_token == null)
+                                                    <td>Yok</td>
+                                                @endif')
+            ->make(true);
+
+    }
+
+
 
     /**
      * Display a listing of the resource.
