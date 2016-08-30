@@ -22,6 +22,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('/subscribe', array('as' => 'api.subscribe', 'uses' => 'ApiController@subscribe'));
         Route::post('/unsubscribe', array('as' => 'api.unsubscribe', 'uses' => 'ApiController@unsubscribe'));
         Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
+        Route::post('/favorite', array('as' => 'api.favorite', 'uses' => 'ApiController@favorite'));
     });
 });
 

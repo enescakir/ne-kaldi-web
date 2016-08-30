@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVisitsTable extends Migration
+class CreateFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,15 @@ class CreateVisitsTable extends Migration
      */
     public function up()
     {
-        Schema::create('visits', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('exam_id')->unsigned();
             $table->integer('visitor_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
             $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');
-
         });
     }
 
@@ -31,6 +31,6 @@ class CreateVisitsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('visits');
+        Schema::drop('favorites');
     }
 }
