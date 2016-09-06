@@ -42,26 +42,27 @@ class NotificationController extends Controller
         $devicesArray = [];
         $counter = 1;
         foreach ($visitors as $visitor) {
-            array_push($devicesArray, PushNotification::Device($visitor->notification_token));
-//                PushNotification::app('appNameIOS')
-//                    ->to($visitor->notification_token)
-//                    ->send($notification->message);
-            Log::info( $visitor->id . " => notification added. ". $counter ."/" . count($visitors));
+//            array_push($devicesArray, PushNotification::Device($visitor->notification_token));
+                PushNotification::app('appNameIOS')
+                    ->to($visitor->notification_token)
+                    ->send($notification->message);
+            Log::info( $visitor->id . " => notification sent. ". $counter ."/" . count($visitors));
             $counter = $counter + 1;
         }
 
-        $devices = PushNotification::DeviceCollection($devicesArray);
-        $reponses = PushNotification::app('appNameIOS')
-            ->to($devices)
-            ->send($notification->message);
+//        $devices = PushNotification::DeviceCollection($devicesArray);
+//        $reponses = PushNotification::app('appNameIOS')
+//            ->to($devices)
+//            ->send($notification->message);
         Log::info("Notifications sending is successful");
         $notification->sent_at = Carbon::now();
         $notification->save();
-        foreach ($reponses->pushManager as $push) {
-            $response = $push->getAdapter()->getResponse();
-            Log::info("--------");
-            Log::info($response->getCode());
-        }
+
+//        foreach ($reponses->pushManager as $push) {
+//            $response = $push->getAdapter()->getResponse();
+//            Log::info("--------");
+//            Log::info($response);
+//        }
 
         return [ 'Success' => 'Başarıyla gönderildi.' ];
     }
