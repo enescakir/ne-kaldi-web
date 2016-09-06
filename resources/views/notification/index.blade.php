@@ -22,9 +22,9 @@
                         <tr class="@if ($notification->sent_at !=null) success @else danger @endif">
                             <td>{{  $notification->message }} </td>
                             <td>{{  $notification->creator->name }} </td>
-                            <td>{{  date("d.m.Y h:m", strtotime($notification->expected_at)) }}</td>
+                            <td>{{  date("d.m.Y H:i", strtotime($notification->expected_at)) }}</td>
                             @if ($notification->sent_at !=null)
-                                <td>{{  date("d.m.Y h:m", strtotime($notification->sent_at)) }}</td>
+                                <td>{{  date("d.m.Y H:i", strtotime($notification->sent_at)) }}</td>
                             @else
                                 <td>Gönderilmedi</td>
                             @endif
