@@ -60,7 +60,7 @@ class NotificationController extends Controller
         foreach ($reponses->pushManager as $push) {
             $response = $push->getAdapter()->getResponse();
             Log::info("--------");
-            Log::info($response);
+            Log::info($response->getCode());
         }
 
         return [ 'Success' => 'Başarıyla gönderildi.' ];
