@@ -31,7 +31,7 @@ class VisitController extends Controller
         $visits = Visit::orderBy('created_at')->with('exam','visitor')->get();
         $exams = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
 
-        $examsCollection = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb')->limit(1000);
+        $examsCollection = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
         $exams = [];
         foreach( $examsCollection as $abb=>$exam ){
             if( strpos($abb, "e-YDS") === 0){
