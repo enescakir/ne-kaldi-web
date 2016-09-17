@@ -57,9 +57,9 @@ class VisitController extends Controller
     //     usort($exams, function($a, $b) {
     //         return $b['visits_count'] - $a['visits_count'];
     //     });
-    //     return view('visits.index', compact(['visits', 'exams']));
+        return view('visits.index', compact(['visits', 'exams']));
 
-    // }
+    }
 
     /**
      * Show the form for creating a new resource.
