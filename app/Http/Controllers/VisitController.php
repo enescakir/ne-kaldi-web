@@ -29,35 +29,37 @@ class VisitController extends Controller
     public function index()
     {
         $visits = Visit::orderBy('created_at')->with('exam','visitor')->get();
-        $examsCollection = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
-        $exams = [];
-        foreach( $examsCollection as $abb=>$exam ){
-            if( strpos($abb, "e-YDS") === 0){
-                $eYDS = [];
-                foreach( $exams as $examArray){
-                    if( $examArray["abb"] == "e-YDS"){
-                        $eYDS = $examArray;
-                    }
-                }
-                if( count($eYDS) > 0){
-                    $eYDS["visits_count"] += $exam->sum('visits_count');
-                }
-                else {
-                    $eYDS = [ "abb" => "e-YDS", "visits_count" => $exam->sum('visits_count')];
-                    array_push($exams, $eYDS);
-                }
+        $exams = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
 
-            }
-            else{
-                array_push($exams, [ "abb" => $abb, "visits_count" => $exam->sum('visits_count')]);
-            }
-        }
-        usort($exams, function($a, $b) {
-            return $b['visits_count'] - $a['visits_count'];
-        });
-        return view('visits.index', compact(['visits', 'exams']));
+        // $examsCollection = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
+    //     $exams = [];
+    //     foreach( $examsCollection as $abb=>$exam ){
+    //         if( strpos($abb, "e-YDS") === 0){
+    //             $eYDS = [];
+    //             foreach( $exams as $examArray){
+    //                 if( $examArray["abb"] == "e-YDS"){
+    //                     $eYDS = $examArray;
+    //                 }
+    //             }
+    //             if( count($eYDS) > 0){
+    //                 $eYDS["visits_count"] += $exam->sum('visits_count');
+    //             }
+    //             else {
+    //                 $eYDS = [ "abb" => "e-YDS", "visits_count" => $exam->sum('visits_count')];
+    //                 array_push($exams, $eYDS);
+    //             }
 
-    }
+    //         }
+    //         else{
+    //             array_push($exams, [ "abb" => $abb, "visits_count" => $exam->sum('visits_count')]);
+    //         }
+    //     }
+    //     usort($exams, function($a, $b) {
+    //         return $b['visits_count'] - $a['visits_count'];
+    //     });
+    //     return view('visits.index', compact(['visits', 'exams']));
+
+    // }
 
     /**
      * Show the form for creating a new resource.
