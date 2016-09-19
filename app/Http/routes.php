@@ -44,6 +44,7 @@ Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'E
 
 Route::resource('exams', 'ExamController');
 Route::resource('visits', 'VisitController');
+Route::resource('favorites', 'FavoriteController');
 
 Route::get('visitors/statistics', 'VisitorController@statistics')->name('visitors.statistics');
 Route::get('/visitors/data', array('as' => 'visitors.index.data', 'uses' => 'VisitorController@indexData'));

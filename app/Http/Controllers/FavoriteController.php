@@ -2,25 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Exam;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Visit;
-use DB;
+use App\Favorite, App\Exam;
 
-class VisitController extends Controller
+class FavoriteController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -28,10 +16,10 @@ class VisitController extends Controller
      */
     public function index()
     {
-        $visits = Visit::orderBy('created_at')->with('exam','visitor')->get();
-//        $exams = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
+        $favorites = Favorite::orderBy('created_at')->with('exam','visitor')->get();
+//        $exams = Exam::select('abb')->withCount('favorites')->orderBy('favorites_count', 'desc')->get()->groupBy('abb');
 
-        $examsCollection = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'desc')->get()->groupBy('abb');
+        $examsCollection = Exam::select('abb')->withCount('favorites')->orderBy('favorites_count', 'desc')->get()->groupBy('abb');
         $exams = [];
         foreach( $examsCollection as $abb=>$exam ){
             if( strpos($abb, "e-YDS") === 0){
@@ -42,22 +30,22 @@ class VisitController extends Controller
                     }
                 }
                 if( count($eYDS) > 0){
-                    $eYDS["visits_count"] += $exam->sum('visits_count');
+                    $eYDS["favorites_count"] += $exam->sum('favorites_count');
                 }
                 else {
-                    $eYDS = [ "abb" => "e-YDS", "visits_count" => $exam->sum('visits_count')];
+                    $eYDS = [ "abb" => "e-YDS", "favorites_count" => $exam->sum('favorites_count')];
                     array_push($exams, $eYDS);
                 }
 
             }
             else{
-                array_push($exams, [ "abb" => $abb, "visits_count" => $exam->sum('visits_count')]);
+                array_push($exams, [ "abb" => $abb, "favorites_count" => $exam->sum('favorites_count')]);
             }
         }
         usort($exams, function($a, $b) {
-            return $b['visits_count'] - $a['visits_count'];
+            return $b['favorites_count'] - $a['favorites_count'];
         });
-        return view('visits.index', compact(['visits', 'exams']));
+        return view('favorites.index', compact(['favorites', 'exams']));
     }
 
     /**

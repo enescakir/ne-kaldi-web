@@ -55,7 +55,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ route('exams.index') }}">Sınavlar</a></li>
                     <li><a href="{{ route('visits.index') }}">Ziyaretler</a></li>
-                    <li><a href="#">Favoriler</a></li>
+                    <li><a href="{{ route('favorites.index') }}">Favoriler</a></li>
                     <li><a href="{{ route('visitors.statistics') }}">Ziyaretçiler</a></li>
                     <li><a href="{{ route('notification.index') }}">Bildirimler</a></li>
                     <li><a href="{{ route('log-viewer::logs.list') }}">Loglar</a></li>
