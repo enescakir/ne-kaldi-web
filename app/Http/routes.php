@@ -24,6 +24,15 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('/visit', array('as' => 'api.v1.visit', 'uses' => 'APIv1Controller@visit'));
         Route::post('/favorite', array('as' => 'api.v1.favorite', 'uses' => 'APIv1Controller@favorite'));
     });
+
+    Route::group(['prefix' => 'v2'], function () {
+        Route::get('/exams', array('as' => 'api.v2.exams', 'uses' => 'APIv2Controller@exams'));
+        Route::post('/subscribe', array('as' => 'api.v2.subscribe', 'uses' => 'APIv2Controller@subscribe'));
+        Route::post('/unsubscribe', array('as' => 'api.v2.unsubscribe', 'uses' => 'APIv2Controller@unsubscribe'));
+        Route::post('/visit', array('as' => 'api.v2.visit', 'uses' => 'APIv2Controller@visit'));
+        Route::post('/favorite', array('as' => 'api.v2.favorite', 'uses' => 'APIv2Controller@favorite'));
+    });
+
 });
 
 /*
