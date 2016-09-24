@@ -14,22 +14,45 @@
                     {!! Form::label( 'name', 'Sınavın Adı',['class' => 'control-label']) !!} <span class="required">* </span>
                     {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Yüksek Öğretim Sınavı']) !!}
                 </div>
-
                 <div class="form-group">
                     {!! Form::label( 'abb', 'Kısaltma',['class' => 'control-label']) !!} <span class="required">* </span>
                     {!! Form::text('abb', null, ['class' => 'form-control', 'placeholder' => 'YGS']) !!}
                 </div>
-
                 <div class="form-group">
                     {!! Form::label( 'date', 'Tarihi',['class' => 'control-label']) !!} <span class="required">* </span>
                     {!! Form::text('date', null, ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015 - 10:00', 'id' => 'datetimepicker']) !!}
-
                 </div>
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'start', 'Başvuru Başlangıcı',['class' => 'control-label']) !!} <span class="required">* </span>
+                            {!! Form::text('start', null, ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015', 'id' => 'startpicker']) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'end', 'Başvuru Bitişi',['class' => 'control-label']) !!} <span class="required">* </span>
+                            {!! Form::text('end', null, ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015', 'id' => 'endpicker']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'fee', 'Ücret',['class' => 'control-label']) !!}
+                            {!! Form::text('fee', null, ['class' => 'form-control', 'placeholder' => '30']) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'validity', 'Geçerlilik',['class' => 'control-label']) !!}
+                            {!! Form::text('validity', null, ['class' => 'form-control', 'placeholder' => '5 Yıl']) !!}
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-lg btn-primary">Oluştur</button>
                 </div>
-
             </div>
             {!! Form::close() !!}
 
@@ -71,6 +94,20 @@
             autoclose: true,
             todayHighlight: true,
             minuteStep: 5
+        });
+
+        $('#startpicker').datetimepicker({
+            language: "tr",
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true,
+        });
+
+        $('#endpicker').datetimepicker({
+            language: "tr",
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true,
         });
 
         $('.delete').click(function(){

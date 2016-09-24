@@ -8,13 +8,50 @@ use App\Http\Requests;
 use App\Exam, App\Visit, App\Visitor, App\Favorite;
 use Log, Carbon\Carbon;
 
-class ApiController extends Controller
+class APIv2Controller extends Controller
 {
-    public function exams()
+    public function exams(Request $request)
     {
-        $exams['exams'] = Exam::activated()->orderBy('date')->where('date', '>=', Carbon::now())->get();
+        if ($request->has("after")) {
+            $exams['exams'] = Exam::activated()
+                ->where('date', '>=', Carbon::now())
+                ->where('created_at', '>=', Carbon::parse($request->after))
+                ->orderBy('date')
+                ->get();
+
+        }
+        else {
+            $exams['exams'] = Exam::activated()
+                ->where('date', '>=', Carbon::now())
+                ->orderBy('date')
+                ->get();
+        }
 
         return $exams;
+
+//        public function scopeApplicationNews($query, $after)
+//    {
+//
+//        if ($after == null)
+//            $query->active()->orderby('sent_at');
+//
+//        else
+//            $query->active()
+//                ->where('sent_at', '>=', Carbon::parse($after))
+//                ->orderby('sent_at');
+//    }
+//
+//        public function scopeApplicationUpdates($query, $after)
+//    {
+//        if ($after != null)
+//            $query->active()
+//                ->where('updated_at', '>=', Carbon::parse($after))
+//                ->orderby('sent_at');
+//        else
+//            $query->active()
+//                ->where('id', null);
+//    }
+
     }
 
     /**

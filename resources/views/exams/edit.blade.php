@@ -25,6 +25,34 @@
                     {!! Form::text('date', date("d/m/Y - H:i", strtotime($exam->date)), ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015 - 10:00', 'id' => 'datetimepicker']) !!}
 
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'start', 'Başvuru Başlangıcı',['class' => 'control-label']) !!} <span class="required">* </span>
+                            {!! Form::text('start',  ( $exam->start == null ? null : date("d/m/Y", strtotime($exam->start)) ), ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015', 'id' => 'startpicker']) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'end', 'Başvuru Bitişi',['class' => 'control-label']) !!} <span class="required">* </span>
+                            {!! Form::text('end', ( $exam->end == null ? null : date("d/m/Y", strtotime($exam->end)) ), ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015', 'id' => 'endpicker']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'fee', 'Ücret',['class' => 'control-label']) !!}
+                            {!! Form::text('fee', $exam->fee, ['class' => 'form-control', 'placeholder' => '30']) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label( 'validity', 'Geçerlilik',['class' => 'control-label']) !!}
+                            {!! Form::text('validity', $exam->validity, ['class' => 'form-control', 'placeholder' => '5 Yıl']) !!}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-lg btn-primary">Güncelle</button>
@@ -72,5 +100,19 @@
             todayHighlight: true,
             minuteStep: 5
         });
+        $('#startpicker').datetimepicker({
+            language: "tr",
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true,
+        });
+
+        $('#endpicker').datetimepicker({
+            language: "tr",
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true,
+        });
+
     </script>
 @endsection

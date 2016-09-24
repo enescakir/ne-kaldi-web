@@ -20,6 +20,9 @@ class CreateNotificationsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->integer('exam_id')->unsigned()->nullable();
+            $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
+
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->integer('deleted_by')->unsigned()->nullable();

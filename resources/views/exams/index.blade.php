@@ -9,7 +9,7 @@
         </h1>
         <p class="lead"> Buradan sisteme yeni sınavlar ekleyebilirsiniz. Varolan sınavları silebilirsiniz.</p>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h3>Gelecek Sınavlar</h3>
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
@@ -17,7 +17,12 @@
                     <th> Sınav </th>
                     <th> Kısaltma </th>
                     <th> Tarih </th>
-                    <th style="width: 60px"> F/G </th>
+                    <th> Başvuru Baş. </th>
+                    <th> Başvuru Bit. </th>
+                    <th> Ücret </th>
+                    <th> Geçerli. </th>
+                    <th style="width: 50px"> Fav. </th>
+                    <th style="width: 100px"> Gör. </th>
                     <th style="width: 150px"> İşlem </th>
                 </tr>
                 </thead>
@@ -26,8 +31,13 @@
                     <tr class="@if ($exam->activated == 1) success @else danger @endif">
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
-                        <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }}</td>
-                        <td>{{  $exam->favorites_count }} / {{  $exam->visits_count }} </td>
+                        <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }} </td>
+                        <td>{{  ($exam->start == null ? "-" : date("d.m.Y", strtotime($exam->start))) }}</td>
+                        <td>{{  ($exam->end == null ? "-" : date("d.m.Y", strtotime($exam->end))) }}</td>
+                        <td>{{  $exam->fee == null ? "-" : $exam->fee }}</td>
+                        <td>{{  $exam->validity == null ? "-" : $exam->validity }}</td>
+                        <td>{{  $exam->favorites_count }}</td>
+                        <td>{{  $exam->visits_count }} </td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-info">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -45,13 +55,13 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4">Gelecek sınav yok</td>
+                        <td colspan="10">Gelecek sınav yok</td>
                     </tr>
                 @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h3>Geçmiş Sınavlar</h3>
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
@@ -59,8 +69,13 @@
                     <th> Sınav </th>
                     <th> Kısaltma </th>
                     <th> Tarih </th>
-                    <th style="width: 60px"> F/G </th>
-                    <th style="width: 150px!important;"> İşlem </th>
+                    <th> Başvuru Baş. </th>
+                    <th> Başvuru Bit. </th>
+                    <th> Ücret </th>
+                    <th> Geçerli. </th>
+                    <th style="width: 50px"> Fav. </th>
+                    <th style="width: 100px"> Gör. </th>
+                    <th style="width: 150px"> İşlem </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,8 +83,13 @@
                     <tr class="@if ($exam->activated == 1) success @else danger @endif">
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
-                        <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }}</td>
-                        <td>{{  $exam->favorites_count }} / {{  $exam->visits_count }} </td>
+                        <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }} </td>
+                        <td>{{  ($exam->start == null ? "-" : date("d.m.Y", strtotime($exam->start))) }}</td>
+                        <td>{{  ($exam->end == null ? "-" : date("d.m.Y", strtotime($exam->end))) }}</td>
+                        <td>{{  $exam->fee == null ? "-" : $exam->fee }}</td>
+                        <td>{{  $exam->validity == null ? "-" : $exam->validity }}</td>
+                        <td>{{  $exam->favorites_count }}</td>
+                        <td>{{  $exam->visits_count }} </td>
                         <td>
                             <button type="button" id="exam-{{$exam->id}}" class="activate btn btn-info">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>

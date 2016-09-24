@@ -55,6 +55,14 @@ class ExamController extends Controller
         $exam->name = $request->input('name');
         $exam->abb = $request->input('abb');
         $exam->date = $request->input('date');
+        if($request->has('start'))  $exam->start = $request->input('start');
+        else $exam->start = null;
+        if($request->has('end'))  $exam->end = $request->input('end');
+        else $exam->end = null;
+        if($request->has('fee'))  $exam->fee = $request->input('fee');
+        else $exam->fee = null;
+        if($request->has('validity'))  $exam->validity = $request->input('validity');
+        else $exam->validity = null;
         $exam->save();
         Session::flash('success_message','<strong>' . $exam->name . '</strong> başarıyla eklendi.');
         return redirect()->route('exams.index');
@@ -96,6 +104,15 @@ class ExamController extends Controller
         $exam->name = $request->input('name');
         $exam->abb = $request->input('abb');
         $exam->date = $request->input('date');
+        if($request->has('start'))  $exam->start = $request->input('start');
+        else $exam->start = null;
+        if($request->has('end'))  $exam->end = $request->input('end');
+        else $exam->end = null;
+        if($request->has('fee'))  $exam->fee = $request->input('fee');
+        else $exam->fee = null;
+        if($request->has('validity'))  $exam->validity = $request->input('validity');
+        else $exam->validity = null;
+
         $exam->save();
         Session::flash('success_message', '<strong>' . $exam->name . '</strong> başarıyla düzenlendi.');
         return redirect()->route('exams.index');

@@ -15,6 +15,10 @@ class Visitor extends Model
         return $this->hasMany('App\Visit');
     }
 
+    public function actions(){
+        return $this->hasMany('App\VisitorAction', 'visitor_id');
+    }
+
     public function favorites(){
         return $this->hasMany('App\Favorite');
     }

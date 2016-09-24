@@ -19,6 +19,11 @@ class CreateExamsTable extends Migration
             $table->dateTime('date');
             $table->boolean('activated')->default(false);
             $table->timestamps();
+
+            $table->date('start')->nullable();
+            $table->date('end')->nullable();
+            $table->string('fee')->nullable();
+            $table->string('validity')->nullable();
             $table->softDeletes();
 
             $table->integer('created_by')->unsigned()->nullable();
@@ -28,7 +33,6 @@ class CreateExamsTable extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-
         });
     }
 

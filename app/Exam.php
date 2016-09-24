@@ -36,6 +36,14 @@ class Exam extends Model
         return $this->attributes['date'] = Carbon::createFromFormat('d/m/Y - H:i', $date);
     }
 
+    public function setStartAttribute($date){
+        return $this->attributes['start'] = Carbon::createFromFormat('d/m/Y', $date);
+    }
+
+    public function setEndAttribute($date){
+        return $this->attributes['end'] = Carbon::createFromFormat('d/m/Y', $date);
+    }
+
     public function scopeActivated($query){
         $query->where('activated',1);
     }

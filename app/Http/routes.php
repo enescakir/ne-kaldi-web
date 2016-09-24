@@ -18,11 +18,11 @@
 
 Route::group(['prefix' => 'api'], function () {
     Route::group(['prefix' => 'v1'], function () {
-        Route::get('/exams', array('as' => 'api.exams', 'uses' => 'ApiController@exams'));
-        Route::post('/subscribe', array('as' => 'api.subscribe', 'uses' => 'ApiController@subscribe'));
-        Route::post('/unsubscribe', array('as' => 'api.unsubscribe', 'uses' => 'ApiController@unsubscribe'));
-        Route::post('/visit', array('as' => 'api.visit', 'uses' => 'ApiController@visit'));
-        Route::post('/favorite', array('as' => 'api.favorite', 'uses' => 'ApiController@favorite'));
+        Route::get('/exams', array('as' => 'api.v1.exams', 'uses' => 'APIv1Controller@exams'));
+        Route::post('/subscribe', array('as' => 'api.v1.subscribe', 'uses' => 'APIv1Controller@subscribe'));
+        Route::post('/unsubscribe', array('as' => 'api.v1.unsubscribe', 'uses' => 'APIv1Controller@unsubscribe'));
+        Route::post('/visit', array('as' => 'api.v1.visit', 'uses' => 'APIv1Controller@visit'));
+        Route::post('/favorite', array('as' => 'api.v1.favorite', 'uses' => 'APIv1Controller@favorite'));
     });
 });
 
