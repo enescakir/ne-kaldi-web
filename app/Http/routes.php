@@ -52,9 +52,10 @@ Route::group(['prefix' => 'api'], function () {
 Route::get('/', 'FrontController@home')->name('home');
 
 Route::auth();
+Route::get('/exams/customs', 'ExamController@customs')->name('exams.customs.index');
 Route::post('/exams/{id}/activate', array('as' => 'exams.activate', 'uses' => 'ExamController@activate'));
-
 Route::resource('exams', 'ExamController');
+
 Route::resource('visits', 'VisitController');
 Route::resource('favorites', 'FavoriteController');
 

@@ -53,6 +53,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {!! Form::label( 'desc', 'Açıklama',['class' => 'control-label']) !!}
+                            {!! Form::textarea('desc', $exam->desc, ['class' => 'form-control', 'rows' => '4']) !!}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-lg btn-primary">Güncelle</button>

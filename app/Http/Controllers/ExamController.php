@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Exam;
+use App\Exam, App\CustomExam;
 use Carbon\Carbon;
 use Session;
 
@@ -26,6 +26,12 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function customs()
+    {
+        $exams = CustomExam::orderBy('date')->get();
+        return view('exams.customs', compact(['exams']));
+    }
+
     public function index()
     {
         $exams = Exam::withCount('visits', 'favorites')->orderBy('date')->where('date', '>', Carbon::now())->get();
@@ -63,6 +69,8 @@ class ExamController extends Controller
         else $exam->fee = null;
         if($request->has('validity'))  $exam->validity = $request->input('validity');
         else $exam->validity = null;
+        if($request->has('desc'))  $exam->desc = $request->input('desc');
+        else $exam->desc = null;
         $exam->save();
         Session::flash('success_message','<strong>' . $exam->name . '</strong> başarıyla eklendi.');
         return redirect()->route('exams.index');
@@ -112,7 +120,8 @@ class ExamController extends Controller
         else $exam->fee = null;
         if($request->has('validity'))  $exam->validity = $request->input('validity');
         else $exam->validity = null;
-
+        if($request->has('desc'))  $exam->desc = $request->input('desc');
+        else $exam->desc = null;
         $exam->save();
         Session::flash('success_message', '<strong>' . $exam->name . '</strong> başarıyla düzenlendi.');
         return redirect()->route('exams.index');
