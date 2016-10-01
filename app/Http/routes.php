@@ -28,6 +28,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::group(['prefix' => 'v2'], function () {
         Route::get('/exams', array('as' => 'api.v2.exams', 'uses' => 'APIv2Controller@exams'));
         Route::post('/subscribe', array('as' => 'api.v2.subscribe', 'uses' => 'APIv2Controller@subscribe'));
+        Route::post('/exam', array('as' => 'api.v2.exam', 'uses' => 'APIv2Controller@exam'));
+        Route::post('/visitor/action', array('as' => 'api.v2.visitor.action', 'uses' => 'APIv2Controller@visitorAction'));
+        Route::post('/message', array('as' => 'api.v2.message', 'uses' => 'APIv2Controller@message'));
         Route::post('/unsubscribe', array('as' => 'api.v2.unsubscribe', 'uses' => 'APIv2Controller@unsubscribe'));
         Route::post('/visit', array('as' => 'api.v2.visit', 'uses' => 'APIv2Controller@visit'));
         Route::post('/favorite', array('as' => 'api.v2.favorite', 'uses' => 'APIv2Controller@favorite'));

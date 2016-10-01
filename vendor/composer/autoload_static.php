@@ -431,6 +431,7 @@ class ComposerStaticInitb4ba9eba9d674e4021c7b5c69b444f68
         'Canvas' => __DIR__ . '/..' . '/dompdf/dompdf/include/canvas.cls.php',
         'Canvas_Factory' => __DIR__ . '/..' . '/dompdf/dompdf/include/canvas_factory.cls.php',
         'Cellmap' => __DIR__ . '/..' . '/dompdf/dompdf/include/cellmap.cls.php',
+        'CreateCustomExamsTable' => __DIR__ . '/../..' . '/database/migrations/2016_10_01_215638_create_custom_exams_table.php',
         'CreateExamsTable' => __DIR__ . '/../..' . '/database/migrations/2016_04_12_083750_create_exams_table.php',
         'CreateFavoritesTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_31_000035_create_favorites_table.php',
         'CreateNotificationsTable' => __DIR__ . '/../..' . '/database/migrations/2016_08_18_183825_create_notifications_table.php',

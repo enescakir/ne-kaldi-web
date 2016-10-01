@@ -24,6 +24,8 @@ class CreateExamsTable extends Migration
             $table->date('end')->nullable();
             $table->string('fee')->nullable();
             $table->string('validity')->nullable();
+            $table->text('desc')->nullable();
+
             $table->softDeletes();
 
             $table->integer('created_by')->unsigned()->nullable();

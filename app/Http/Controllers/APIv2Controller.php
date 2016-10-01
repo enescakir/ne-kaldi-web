@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Exam, App\Visit, App\Visitor, App\Favorite;
+use App\Exam, App\Visit, App\Visitor, App\Favorite, App\VisitorAction, App\CustomExam, App\Ticket;
 use Log, Carbon\Carbon;
 
 class APIv2Controller extends Controller
@@ -28,30 +28,6 @@ class APIv2Controller extends Controller
         }
 
         return $exams;
-
-//        public function scopeApplicationNews($query, $after)
-//    {
-//
-//        if ($after == null)
-//            $query->active()->orderby('sent_at');
-//
-//        else
-//            $query->active()
-//                ->where('sent_at', '>=', Carbon::parse($after))
-//                ->orderby('sent_at');
-//    }
-//
-//        public function scopeApplicationUpdates($query, $after)
-//    {
-//        if ($after != null)
-//            $query->active()
-//                ->where('updated_at', '>=', Carbon::parse($after))
-//                ->orderby('sent_at');
-//        else
-//            $query->active()
-//                ->where('id', null);
-//    }
-
     }
 
     /**
@@ -82,13 +58,10 @@ class APIv2Controller extends Controller
 
     public function visit(Request $request)
     {
-        if ($request->exam_id == '0') {
-            return 'Its default';
-        }
-
         $visitor = Visitor::firstOrCreate($request->only(['device_id']));
         $visitor->platform = $request->platform;
         $visitor->via = $request->via;
+        $visitor->api_version = $request->api_version;
         $visitor->save();
         $request['visitor_id'] = $visitor->id;
         $visit = Visit::create($request->only(['visitor_id', 'exam_id']));
@@ -98,10 +71,6 @@ class APIv2Controller extends Controller
 
     public function favorite(Request $request)
     {
-        if ($request->exam_id == '0') {
-            return 'Its default';
-        }
-
         $visitor = Visitor::firstOrCreate($request->only(['device_id']));
         $visitor->platform = $request->platform;
         $visitor->via = $request->via;
@@ -122,6 +91,47 @@ class APIv2Controller extends Controller
         else if ($request->favorite == 0) {
             $favorite->delete();
         }
+        return 'Success';
+    }
+
+    public function visitorAction(Request $request)
+    {
+        $visitor = Visitor::firstOrCreate($request->only(['device_id']));
+        $visitor->platform = $request->platform;
+        $visitor->via = $request->via;
+        $visitor->save();
+        $visitor->actions()->save(new VisitorAction(['action' => $request->action]));
+
+        return 'Success';
+    }
+
+    public function exam(Request $request){
+        $visitor = Visitor::firstOrCreate($request->only(['device_id']));
+        $visitor->platform = $request->platform;
+        $visitor->via = $request->via;
+        $visitor->save();
+        $exam = new CustomExam();
+        $exam->name = $request->exam_name;
+        $exam->abb = $request->exam_abb;
+        $exam->date = $request->exam_date;
+        $exam->visitor_id = $visitor->id;
+        if($request->has('exam_desc')) $exam->desc = $request->exam_desc;
+        $exam->save();
+        return 'Success';
+    }
+
+    public function message(Request $request){
+        $visitor = Visitor::firstOrCreate($request->only(['device_id']));
+        $visitor->platform = $request->platform;
+        $visitor->via = $request->via;
+        $visitor->name = $request->name;
+        $visitor->email = $request->email;
+        $visitor->save();
+
+        $ticket = new Ticket();
+        $ticket->message = $request->message;
+        $ticket->visitor_id = $visitor->id;
+        $ticket->save();
         return 'Success';
     }
 

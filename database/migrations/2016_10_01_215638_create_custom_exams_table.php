@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTicketsTable extends Migration
+class CreateCustomExamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,15 @@ class CreateTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('custom_exams', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('visitor_id')->unsigned();
             $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');
 
-            $table->mediumText('message');
-
-            $table->datetime('answered_at')->nullable();
-            $table->integer('answered_by')->unsigned()->nullable();
-            $table->foreign('answered_by')->references('id')->on('users');
+            $table->string('name');
+            $table->string('abb');
+            $table->dateTime('date');
+            $table->text('desc')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
@@ -35,6 +34,6 @@ class CreateTicketsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tickets');
+        Schema::drop('custom_exams');
     }
 }
