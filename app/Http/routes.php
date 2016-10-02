@@ -58,6 +58,7 @@ Route::resource('exams', 'ExamController');
 
 Route::resource('visits', 'VisitController');
 Route::resource('favorites', 'FavoriteController');
+Route::resource('tickets', 'TicketController');
 
 Route::get('visitors/statistics', 'VisitorController@statistics')->name('visitors.statistics');
 Route::get('/visitors/data', array('as' => 'visitors.index.data', 'uses' => 'VisitorController@indexData'));

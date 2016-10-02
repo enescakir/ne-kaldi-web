@@ -19,6 +19,10 @@ class Visitor extends Model
         return $this->hasMany('App\VisitorAction', 'visitor_id');
     }
 
+    public function customExams(){
+        return $this->hasMany('App\CustomExam', 'visitor_id');
+    }
+
     public function favorites(){
         return $this->hasMany('App\Favorite');
     }

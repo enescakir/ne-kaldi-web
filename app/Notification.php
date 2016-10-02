@@ -37,4 +37,8 @@ class Notification extends Model
         return $this->belongsTo('App\User', 'created_by');
     }
 
+    public function exam(){
+        return $this->belongsTo('App\Exam');
+    }
+
 }

@@ -25,12 +25,13 @@
                 <tr>
                     <th> # </th>
                     <th> Tarih </th>
+                    <th> İsim </th>
+                    <th> E-posta </th>
                     <th> Bildirim </th>
-                    <th> Cihaz No </th>
-                    <th> Platform </th>
                     <th> Via </th>
                     <th> Ziyaret </th>
                     <th> Favori </th>
+                    <th> Sınav </th>
                     <th style="width: 50px"> İşlem </th>
                 </tr>
                 </thead>
@@ -39,19 +40,13 @@
                 <tfoot>
                     <th> # </th>
                     <th> Tarih </th>
+                    <th> İsim </th>
+                    <th> E-posta </th>
                     <th>
                         <select>
                             <option value="">Hepsi</option>
                             <option value="Var">Var</option>
                             <option value="Yok">Yok</option>
-                        </select>
-                    </th>
-                    <th> Cihaz No </th>
-                    <th>
-                        <select>
-                            <option value="">Hepsi</option>
-                            <option value="iOS">iOS</option>
-                            <option value="Android">Android</option>
                         </select>
                     </th>
                     <th>
@@ -64,6 +59,7 @@
                     </th>
                     <th> Ziyaret </th>
                     <th> Favori </th>
+                    <th> Sınav </th>
                     <th></th>
                 </tfoot>
             </table>
@@ -111,12 +107,13 @@
             "columns": [
                 { data: 'id', name: 'id', width: "3%" },
                 { data: 'created_at', name: 'created_at' },
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
                 { data: 'notification_token', name: 'notification_token' },
-                { data: 'device_id', name: 'device_id' },
-                { data: 'platform', name: 'platform' },
                 { data: 'via', name: 'via' },
                 { data: 'visits_count', name: 'visits_count' },
                 { data: 'favorites_count', name: 'favorites_count' },
+                { data: 'custom_exams_count', name: 'custom_exams_count' },
                 { data: 'operations',name: 'operations', orderable:false }
             ],
             "search": {

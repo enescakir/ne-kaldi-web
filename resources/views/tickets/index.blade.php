@@ -2,98 +2,53 @@
 
 @section('content')
     <div class="container">
-        <h1>Bildirimler</h1>
-        <p class="lead"> Buradan sistemdeki bütün bildirimleri görüntüleyebilirsiniz.</p>
+        <h1>Mesajlar</h1>
+        <p class="lead"> Kullanıcılarımızdan gelen mesajlar.</p>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <table class="table table-hover table-striped table-bordered" style="width:100%;">
                     <thead>
                     <tr>
-                        <th> Metin</th>
-                        <th> Oluşturan</th>
-                        <th> Sınav</th>
-                        <th> Planlanan</th>
-                        <th> Gönderilme</th>
+                        <th> Mesaj</th>
+                        <th> İsim</th>
+                        <th> E-posta</th>
+                        <th> Cevaplayan</th>
                         <th style="width: 150px"> İşlem</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse ($notifications as $notification)
-                        <tr class="@if ($notification->sent_at !=null) success @else danger @endif">
-                            <td>{{  $notification->message }} </td>
-                            <td>{{  $notification->creator->name }} </td>
+                    @forelse ($tickets as $ticket)
+                        <tr class="@if ($notification->answered_at != null) success @else danger @endif">
+                            <td>{{  $ticket->message }} </td>
+                            <td>{{  $ticket->visitor->name }} </td>
+                            <td>{{  $ticket->visitor->email }} </td>
                             <td>
-                                @if ($notification->exam == null)
-                                    Herkes
+                                @if ($ticket->answered_by == null)
+                                    -
                                 @else
-                                    {{ $notification->exam->abb }}
+                                    {{ $ticket->answered_by }}
                                 @endif
                             </td>
-                            <td>{{  date("d.m.Y H:i", strtotime($notification->expected_at)) }}</td>
-                            @if ($notification->sent_at !=null)
-                                <td>{{  date("d.m.Y H:i", strtotime($notification->sent_at)) }}</td>
-                            @else
-                                <td>Gönderilmedi</td>
-                            @endif
                             <td>
-                                <button type="button" id="notification-{{$notification->id}}"
-                                        class="send btn btn-primary">
+                                <button type="button" id="notification-{{$ticket->id}}"
+                                        class="btn btn-primary">
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 </button>
-
-                                <button type="button" id="notification-{{$notification->id}}"
-                                        class="edit btn btn-warning">
-                                    <i class="fa fa-edit" aria-hidden="true"></i>
-                                </button>
-                                <button type="button" id="notification-{{$notification->id}}"
-                                        class="delete btn btn-danger">
+                                <button type="button" id="notification-{{$ticket->id}}"
+                                        class="btn btn-danger">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
                             </td>
-
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">Bildirim bulunmamaktadır.</td>
+                            <td colspan="5">Mesaj bulunmamaktadır.</td>
                         </tr>
                     @endforelse
                     </tbody>
                 </table>
             </div>
-
-            <div class="col-md-4">
-                {!! Form::open(['route' => 'notification.store', 'method' => 'POST']) !!}
-                <div class="portlet-body">
-                    <div class="form-group">
-                        {!! Form::label( 'message', 'Bildirim',['class' => 'control-label']) !!} <span class="required">* </span>
-                        {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => 'Başarılar dileriz']) !!}
-                    </div>
-
-                    <div class="form-group">
-                        {!! Form::label( 'expected_at', 'Planlanan Tarih:',['class' => 'control-label']) !!} <span
-                                class="required">* </span>
-                        {!! Form::text('expected_at', null, ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015 - 10:00', 'id' => 'datetimepicker']) !!}
-
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label( 'exam_id', 'Sınav',['class' => 'control-label']) !!} <span class="required">* </span>
-                        <select name="exam_id" id="examselect" class="form-control">
-                            <option value="">Herkes</option>
-                            @foreach($exams as $exam)
-                                <option value="{{ $exam->id }}">{{ $exam->abb }} - {{  date("d.m.Y", strtotime($exam->date)) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-lg btn-primary">Oluştur</button>
-                    </div>
-
-                </div>
-                {!! Form::close() !!}
-
-            </div>
-
         </div>
     </div>
 @endsection

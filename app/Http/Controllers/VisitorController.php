@@ -32,7 +32,7 @@ class VisitorController extends Controller
 
     public function indexData()
     {
-        return Datatables::of(Visitor::orderBy('visits_count', 'DESC')->withCount('visits', 'favorites')->get())
+        return Datatables::of(Visitor::orderBy('visits_count', 'DESC')->withCount('visits', 'favorites', 'customExams')->get())
             ->addColumn('operations','<a class="delete btn btn-danger btn-sm" href="javascript:;"><i class="fa fa-trash"></i> </a>')
             ->editColumn('notification_token', '@if($notification_token != null)
                                                      <td>Var</td> 
@@ -40,6 +40,19 @@ class VisitorController extends Controller
                                                 @if ($notification_token == null)
                                                     <td>Yok</td>
                                                 @endif')
+            ->editColumn('name', '@if($name == null)
+                                                     <td>-</td> 
+                                                @endif
+                                                @if ($name != null)
+                                                    <td>{{ $name }}</td>
+                                                @endif')
+            ->editColumn('email', '@if($email == null)
+                                                     <td>-</td> 
+                                                @endif
+                                                @if ($email != null)
+                                                    <td>{{ $email }}</td>
+                                                @endif')
+
             ->make(true);
 
     }

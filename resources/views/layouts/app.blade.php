@@ -53,10 +53,20 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ route('exams.index') }}">Sınavlar</a></li>
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Sınavlar <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('exams.index') }}">Merkezi Sınavlar</a></li>
+                            <li><a href="{{ route('exams.customs.index') }}">Kullanıcı Sınavları</a></li>
+                        </ul>
+                    </li>
+
                     <li><a href="{{ route('visits.index') }}">Ziyaretler</a></li>
                     <li><a href="{{ route('favorites.index') }}">Favoriler</a></li>
                     <li><a href="{{ route('visitors.statistics') }}">Ziyaretçiler</a></li>
+                    <li><a href="{{ route('tickets.index') }}">Mesajlar</a></li>
                     <li><a href="{{ route('notification.index') }}">Bildirimler</a></li>
                     <li><a href="{{ route('log-viewer::logs.list') }}">Loglar</a></li>
                 </ul>
