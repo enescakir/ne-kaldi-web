@@ -18,6 +18,20 @@ class APIv2Controller extends Controller
                 ->where('created_at', '>=', Carbon::parse($request->after))
                 ->orderBy('date')
                 ->get();
+            $exams['updated'] = Exam::activated()
+                ->where('date', '>=', Carbon::now())
+                ->where('updated_at', '>=', Carbon::parse($request->after))
+                ->orderBy('date')
+                ->get();
+            $exams['deleted'] = Exam::withTrashed()
+                ->where('deleted_at', '>=', Carbon::parse($request->after))
+                ->orWhere([
+                    ['updated_at', '>=', Carbon::parse($request->after)],
+                    ['activated', 0]
+                ])
+                ->orderBy('date')
+                ->get();
+
 
         }
         else {
@@ -25,6 +39,8 @@ class APIv2Controller extends Controller
                 ->where('date', '>=', Carbon::now())
                 ->orderBy('date')
                 ->get();
+            $exams['updated'] = [];
+            $exams['deleted'] = [];
         }
 
         return $exams;
