@@ -39,35 +39,38 @@ class NotificationController extends Controller
 
     public function send($id, Request $request)
     {
+
         $notification = Notification::find($id);
+        Log::info("Notification #" . $notification->id . " sending is started.");
         $visitors = [];
-        if($notification->exam_id == null) {
-            $visitors = Visitor::whereNotNull('notification_token')->get();
-        } else {
-            $exam = Exam::whereId($notification->exam_id)->with(['favorites','favorites.visitor'])->first();
-            foreach($exam->favorites as $favorite){
-            	Log::info($favorite);
-            	Log::info($favorite->visitor);
-				Log::info("--------");
-				if($favorite->visitor != null)
-	                if($favorite->visitor->notification_token != null)
-    	                array_push($visitors, $favorite->visitor);
-            }
-        }
+        if($notification->exam_id == null)
+            $visitors = Visitor::whereNotNull('notification_token')->lists('notification_token');
+        else
+            $visitors = Exam::whereId('8')->first()->favoriters()->whereNotNull('notification_token')->lists('notification_token');
 
         $devicesArray = [];
         $counter = 1;
         foreach ($visitors as $visitor) {
-                PushNotification::app('appNameIOS')
-                    ->to($visitor->notification_token)
-                    ->send($notification->message);
-            Log::info( $visitor->id . " => notification #" . $notification->id . " sent. ". $counter ."/" . count($visitors));
+            array_push($devicesArray, PushNotification::Device($visitor));
+            Log::info( $visitor . " => notification #" . $notification->id . " sent. ". $counter ."/" . count($visitors));
             $counter = $counter + 1;
         }
 
-        Log::info("Notification #" . $notification->id . " sending is successful");
+
+        $devices = PushNotification::DeviceCollection($devicesArray);
+        $message = PushNotification::Message($notification->message);
+        $collection = PushNotification::app('appNameIOS')->to($devices)->send($message);
+        Log::info("Notification #" . $notification->id . " sending is successful.");
         $notification->sent_at = Carbon::now();
         $notification->save();
+        Log::info($collection);
+
+//                $devices = PushNotification::DeviceCollection(array(
+//            PushNotification::Device('966bc82c72c9fe3fcfda23e5f83164e4ab5c73a49a88282772adda83240c8674'),
+//            PushNotification::Device('8cff313029afd1967f28370eb899b379ddc4b0a604c52edd771001c23e641f41'),
+//            PushNotification::Device('f40519b8e2f35e69dcddc9eac7295234fed96692d0c959329fccdbcea50cb3aa')
+//        ));
+//        dd($collection);
 
         return [ 'Success' => 'Başarıyla gönderildi.' ];
     }
@@ -76,6 +79,21 @@ class NotificationController extends Controller
     {
         Notification::destroy($id);
         return 'Success';
+    }
+
+
+    public function test(Request $request)
+    {
+
+//        $devices = PushNotification::DeviceCollection(array(
+//            PushNotification::Device('966bc82c72c9fe3fcfda23e5f83164e4ab5c73a49a88282772adda83240c8674'),
+//            PushNotification::Device('8cff313029afd1967f28370eb899b379ddc4b0a604c52edd771001c23e641f41'),
+//            PushNotification::Device('f40519b8e2f35e69dcddc9eac7295234fed96692d0c959329fccdbcea50cb3aa')
+//        ));
+//        $message = PushNotification::Message('Ne Kaldı? Test');
+//        $collection = PushNotification::app('appNameIOS')->to($devices)->send($message);
+//        dd($collection);
+
     }
 
 }

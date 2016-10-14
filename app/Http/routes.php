@@ -64,6 +64,7 @@ Route::get('visitors/statistics', 'VisitorController@statistics')->name('visitor
 Route::get('/visitors/data', array('as' => 'visitors.index.data', 'uses' => 'VisitorController@indexData'));
 Route::resource('visitors', 'VisitorController');
 
+Route::get('notification/test', 'NotificationController@test')->name('notification.test');
 Route::resource('notification', 'NotificationController');
 Route::post('notification/{id}/send', 'NotificationController@send')->name('notification.send');
 

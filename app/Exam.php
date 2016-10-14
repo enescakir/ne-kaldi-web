@@ -55,4 +55,9 @@ class Exam extends Model
     public function favorites(){
         return $this->hasMany('App\Favorite');
     }
+
+    public function favoriters(){
+        return $this->belongsToMany('App\Visitor','favorites','exam_id', 'visitor_id')->whereNull('deleted_at');
+    }
+
 }
