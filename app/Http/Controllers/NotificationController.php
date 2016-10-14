@@ -46,8 +46,12 @@ class NotificationController extends Controller
         } else {
             $exam = Exam::whereId($notification->exam_id)->with(['favorites','favorites.visitor'])->first();
             foreach($exam->favorites as $favorite){
-                if($favorite->visitor->notification_token != null)
-                    array_push($visitors, $favorite->visitor);
+            	Log::info($favorite);
+            	Log::info($favorite->visitor);
+				Log::info("--------");
+				if($favorite->visitor != null)
+	                if($favorite->visitor->notification_token != null)
+    	                array_push($visitors, $favorite->visitor);
             }
         }
 
