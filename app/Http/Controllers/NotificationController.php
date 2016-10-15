@@ -39,39 +39,27 @@ class NotificationController extends Controller
 
     public function send($id, Request $request)
     {
-
         $notification = Notification::find($id);
         Log::info("Notification #" . $notification->id . " sending is started.");
         $visitors = [];
         if($notification->exam_id == null)
             $visitors = Visitor::whereNotNull('notification_token')->lists('notification_token');
         else
-            $visitors = Exam::whereId('8')->first()->favoriters()->whereNotNull('notification_token')->lists('notification_token');
+            $visitors = Exam::whereId($notification->exam_id)->first()->favoriters()->whereNotNull('notification_token')->lists('notification_token');
 
         $devicesArray = [];
         $counter = 1;
         foreach ($visitors as $visitor) {
             array_push($devicesArray, PushNotification::Device($visitor));
-            Log::info( $visitor . " => notification #" . $notification->id . " sent. ". $counter ."/" . count($visitors));
+            Log::info("Notification #" . $notification->id . " => " . $counter ."/" . count($visitors) . " added.");
             $counter = $counter + 1;
         }
-
-
         $devices = PushNotification::DeviceCollection($devicesArray);
         $message = PushNotification::Message($notification->message);
         $collection = PushNotification::app('appNameIOS')->to($devices)->send($message);
         Log::info("Notification #" . $notification->id . " sending is successful.");
         $notification->sent_at = Carbon::now();
         $notification->save();
-        Log::info($collection);
-
-//                $devices = PushNotification::DeviceCollection(array(
-//            PushNotification::Device('966bc82c72c9fe3fcfda23e5f83164e4ab5c73a49a88282772adda83240c8674'),
-//            PushNotification::Device('8cff313029afd1967f28370eb899b379ddc4b0a604c52edd771001c23e641f41'),
-//            PushNotification::Device('f40519b8e2f35e69dcddc9eac7295234fed96692d0c959329fccdbcea50cb3aa')
-//        ));
-//        dd($collection);
-
         return [ 'Success' => 'Başarıyla gönderildi.' ];
     }
 
