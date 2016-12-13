@@ -13,7 +13,7 @@ class FrontController extends Controller
     //
 
     public function home(){
-        $exams = Exam::activated()->orderBy('date')->where('date', '>=', Carbon::now())->get();
+//        $exams = Exam::activated()->orderBy('date')->where('date', '>=', Carbon::now())->get();
 
         return view('welcome', compact(['exams']));
     }
