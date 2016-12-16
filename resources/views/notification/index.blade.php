@@ -86,7 +86,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-lg btn-primary">Oluştur</button>
+                        <button type="submit" class="btn btn-lg btn-primary">Gönder</button>
                     </div>
 
                 </div>

@@ -66,9 +66,10 @@ class APIv2Controller extends Controller
         $visitor = Visitor::firstOrCreate($request->only(['device_id']));
         $visitor->platform = $request->platform;
         $visitor->via = $request->via;
+        $visitor->player_id = $request->player_id;
         $visitor->notification_token = $request->notification_token;
+        $visitor->api_version = $request->api_version;
         $visitor->save();
-
         return 'Success';
     }
 

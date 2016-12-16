@@ -17,6 +17,7 @@ class CreateVisitorsTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('notification_token')->nullable();
+            $table->string('player_id')->nullable();
             $table->string('device_id')->nullable();
             $table->string('platform')->nullable();
             $table->string('via')->nullable();
