@@ -17,30 +17,40 @@
         </h1>
     <p class="lead"> Uygulamamızı indiren kişilerin istatistikleri</p>
 
-    <div class="row">
-        <div class="col-md-9">
-            <div id="chartdiv"></div>
-        </div>
-        <div class="col-md-3">
-            <div class="alert alert-info">
-                <h2><strong>İstatistikler</strong></h2>
-                <table style="width: 100%">
-                    <tr>
-                        <td style="text-align: right; padding-right: 5px;"><h3><strong>{{ $visitorsCount }}</strong></h3></td>
-                        <td><h3> farklı kişi</h3></td>
-                    </tr>
-                @foreach( $visitorDevices as $visitorDevice)
+        <div class="row">
+            <div class="col-md-9">
+                <div id="chartdiv"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="alert alert-info">
+                    <h2><strong>İstatistikler</strong></h2>
+                    <table style="width: 100%">
                         <tr>
-                            <td style="text-align: right; padding-right: 5px;"><strong>{{ $visitorDevice->total }}</strong></td>
-                            <td>{{ $visitorDevice->via }}</td>
+                            <td style="text-align: right; padding-right: 5px;"><h3><strong>{{ $visitorsCount }}</strong></h3></td>
+                            <td><h3> farklı kişi</h3></td>
                         </tr>
-                    @endforeach
-                </table>
+                        @foreach( $visitorDevices as $visitorDevice)
+                            <tr>
+                                <td style="text-align: right; padding-right: 5px;"><strong>{{ $visitorDevice->total }}</strong></td>
+                                <td>{{ $visitorDevice->via }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
 
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <h2><strong>{{ $visitorAPIs[1]->api_version }} -> </strong> {{ $visitorAPIs[1]->total }} %{{ $visitorAPIs[1]->total * 100 / ($visitorAPIs[0]->total + $visitorAPIs[1]->total + $visitorAPIs[2]->total) }}</h2>
+                    <h2><strong>{{ $visitorAPIs[0]->api_version }} -> </strong> {{ $visitorAPIs[0]->total }} %{{ $visitorAPIs[0]->total * 100 / ($visitorAPIs[0]->total + $visitorAPIs[1]->total + $visitorAPIs[2]->total) }}</h2>
+                    <h2><strong>Belirsiz -> </strong> {{ $visitorAPIs[2]->total }}</h2>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
 @endsection
 
 

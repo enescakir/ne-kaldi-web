@@ -6,9 +6,11 @@
         <p class="lead"> Kullanıcılarımızın eklediği sınavlar.</p>
     <div class="row">
         <div class="col-md-12">
+            <div class="alert alert-info" role="alert"><h3>Toplam <strong>{{ $exams->total() }}</strong> sınav</h3></div>
             <table class="table table-hover table-striped table-bordered" style="width:100%;">
                 <thead>
                 <tr>
+                    <th> # </th>
                     <th> Sınav </th>
                     <th> Kısaltma </th>
                     <th> Tarih </th>
@@ -19,6 +21,7 @@
                 <tbody>
                 @forelse ($exams as $exam)
                     <tr>
+                        <td>{{  $exam->id }} </td>
                         <td>{{  $exam->name }} </td>
                         <td>{{  $exam->abb }} </td>
                         <td>{{  date("d.m.Y H:i", strtotime($exam->date)) }} </td>
@@ -32,6 +35,7 @@
                 @endforelse
                 </tbody>
             </table>
+            {!! $exams->links() !!}
         </div>
     </div>
 </div>

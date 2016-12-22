@@ -79,7 +79,13 @@ class VisitorController extends Controller
             ->orderBy('total', 'desc')
             ->get();
 
-        return view('visitors.statistics', compact(['visitorsCount', 'visitorDevices', 'visitorsDaily']));
+        $visitorAPIs = DB::table('visitors')
+            ->select('api_version', DB::raw('count(*) as total'))
+            ->groupBy('api_version')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        return view('visitors.statistics', compact(['visitorsCount', 'visitorDevices', 'visitorsDaily', 'visitorAPIs']));
     }
 
     /**

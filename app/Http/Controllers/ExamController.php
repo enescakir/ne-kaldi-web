@@ -28,7 +28,7 @@ class ExamController extends Controller
      */
     public function customs()
     {
-        $exams = CustomExam::orderBy('date')->get();
+        $exams = CustomExam::orderBy('id', 'desc')->paginate(20);
         return view('exams.customs', compact(['exams']));
     }
 
