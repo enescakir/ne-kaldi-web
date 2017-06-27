@@ -20,6 +20,8 @@ class CreateExamsTable extends Migration
             $table->boolean('activated')->default(false);
             $table->timestamps();
 
+            $table->string('category')->nullable();
+            $table->string('institution')->nullable();
             $table->date('start')->nullable();
             $table->date('end')->nullable();
             $table->string('fee')->nullable();
