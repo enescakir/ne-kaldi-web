@@ -14,14 +14,15 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('message');
+            $table->text('message');
+            $table->string('title')->nullable();
+            $table->text('desc')->nullable();
+            $table->text('link')->nullable();
+            $table->string('image')->nullable();
             $table->dateTime('expected_at');
             $table->dateTime('sent_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->integer('exam_id')->unsigned()->nullable();
-            $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
 
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
