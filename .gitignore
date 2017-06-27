@@ -5,3 +5,5 @@ Homestead.json
 .env
 .idea
 /vendor
+/public/front
+/resources/views/welcome.blade.php
