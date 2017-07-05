@@ -16,8 +16,7 @@
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('styles/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css"/>
-
-    {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('styles/sweetalert2.min.css') }}" rel="stylesheet" type="text/css"/>
 
     <style>
         body {
@@ -128,9 +127,28 @@
     <script src="https://www.amcharts.com/lib/3/pie.js"></script>
     <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
     <script src="https://www.amcharts.com/lib/3/lang/tr.js"></script>
+    <script src="{{ asset('scripts/moment.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('scripts/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('scripts/bootstrap-datetimepicker.tr.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('scripts/sweetalert2.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+      $.ajaxSetup({ headers: { 'X-CSRF-Token': $('meta[name="_token"]').attr('content') } });
 
+      $('.datetime-picker').datetimepicker({
+          language: "tr",
+          format: 'dd/mm/yyyy - hh:ii',
+          autoclose: true,
+          todayHighlight: true,
+          minuteStep: 5
+      });
+
+      $('.date-picker').datetimepicker({
+          language: "tr",
+          format: 'dd/mm/yyyy',
+          autoclose: true,
+          todayHighlight: true,
+      });
+    </script>
     @yield('page-scripts')
-
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 </body>
 </html>
