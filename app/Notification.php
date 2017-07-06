@@ -46,15 +46,20 @@ class Notification extends Model
       $fields = [];
       $fields['contents'] = ["en" => $this->message];
       $fields['app_id'] = env('ONESIGNAL_APP_ID');
-      if( count($this->exams) > 0 ) {
+      $exams = $this->exams;
+      if( count($exams) > 0 ) {
+        $first = $exams->shift();
         $fields['filters'] = [
-          ["field" => "tag", "key" => "exam-" . $notification->exam_id, "relation" => "exists"],
-          ["operator" => "OR"],
+          ["field" => "tag", "key" => "exam-" . $first->id, "relation" => "exists"]
         ];
-      }
-      else {
+        foreach ($exams as $exam) {
+          array_push($fields['filters'], ["operator" => "OR"]);
+          array_push($fields['filters'], ["field" => "tag", "key" => "exam-" . $exam->id, "relation" => "exists"]);
+        }
+      } else {
         $fields['included_segments'] = ['All'];
       }
+
       $fields = json_encode($fields);
       print("\nJSON sent:\n");
       print($fields);
