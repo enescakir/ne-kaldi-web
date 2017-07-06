@@ -32,7 +32,7 @@
               <th> Başvuru Bit. </th>
               <th style="width: 40px"> Fv. </th>
               <th style="width: 80px"> Gr. </th>
-              <th style="width: 120px"> İşlem </th>
+              <th style="width: 150px"> İşlem </th>
             </tr>
           </thead>
           <tbody>
@@ -82,7 +82,9 @@
                     <button type="button" exam-id="{{ $exam->id }}" exam-name="{{ $exam->name }}" class="activate btn btn-info btn-sm">
                       <i class="fa fa-refresh" aria-hidden="true"></i>
                     </button>
-
+                    <a type="button" href="{{ route( 'exams.show', $exam->id ) }}" class="show btn btn-success btn-sm">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </a>
                     <a type="button" href="{{ route( 'exams.edit', $exam->id ) }}" class="edit btn btn-warning btn-sm">
                       <i class="fa fa-edit" aria-hidden="true"></i>
                     </a>

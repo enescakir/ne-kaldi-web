@@ -28,7 +28,7 @@ class ExamController extends Controller
   */
   public function customs()
   {
-    $exams = CustomExam::orderBy('id', 'desc')->paginate(20);
+    $exams = CustomExam::orderBy('id', 'desc')->paginate(100);
     return view('exams.customs', compact(['exams']));
   }
 
@@ -86,7 +86,7 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function show($id)
+  public function show(Exam $exam)
   {
     //
   }
@@ -97,9 +97,8 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function edit($id)
+  public function edit(Exam $exam)
   {
-    $exam = Exam::find($id);
     return view('exams.edit', compact(['exam']));
   }
 
@@ -110,9 +109,8 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function update(Request $request, $id)
+  public function update(Request $request, Exam $exam)
   {
-    $exam = Exam::find($id);
     $exam->name = $request->input('name');
     $exam->abb = $request->input('abb');
     $exam->date = $request->input('date');
@@ -151,9 +149,9 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function destroy($id)
+  public function destroy(Exam $exam)
   {
-    Exam::destroy($id);
-    return 'Success';
+    $exam->delete();
+    return $exam;
   }
 }
