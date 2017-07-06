@@ -149,24 +149,53 @@
 
   $('.activate').click(function(){
     var button = $(this);
-    var prefix = "exam-"
-    var id = button.attr("id").substr(prefix.length);
-    // var user_id = window.location.pathname.slice(0, -7).substr(12);
-    if (confirm( id +" numaralı sınavı onaylamak istediğınizden emin misiniz") == false) {
-      return;
-    }
-
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+    var id = button.attr('exam-id');
+    var name = button.attr('exam-name');
+    swal({
+      title: 'Onay durumunu değiştirmek istediğine emin misin?',
+      html: '<strong>Sınav:</strong> ' + name,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'İptal',
+      confirmButtonText: 'Evet, değiştir!',
+      showLoaderOnConfirm: true,
+      preConfirm: function () {
+        return new Promise(function (resolve, reject) {
+          $.ajax({
+            url:  "/exams/" + id + "/activate",
+            method: "POST",
+            success: function (result) {
+              resolve(result)
+            },
+            error: function (xhr, status, errorThrown) {
+              reject()
+              ajaxError(xhr, status, errorThrown)
+            }
+          });
+        })
+      },
+      allowOutsideClick: false,
+    }).then(function (result) {
+      if (result == 1) {
+        swal(
+          'Onaylandı!',
+          'Sınav başarıyla onaylandı',
+          'success'
+        ).then(function () {
+          location.reload();
+        })
+      } else {
+        swal(
+          'Onay kaldırıldı!',
+          'Sınavın onayı başarıyla kaldırıldı',
+          'success'
+        ).then(function () {
+          location.reload();
+        })
       }
-    });
-    $.ajax({
-      url:  "/exams/" + id + "/activate",
-      method: "POST",
-    }).done(function() {
-      location.reload();
-    });
+    })
   });
   </script>
 @endsection

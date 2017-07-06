@@ -138,13 +138,11 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function activate($id)
+  public function activate(Exam $exam)
   {
-    $exam = Exam::find($id);
     $exam->activated = !($exam->activated);
     $exam->save();
-    return 'Success';
-
+    return $exam->activated ? 1 : 0;
   }
 
   /**

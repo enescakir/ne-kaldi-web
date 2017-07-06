@@ -119,7 +119,7 @@
 
     <script>
         var piedatas = <?php echo json_encode($favoritesPerExam) ?>;
-        var piechart = AmCharts.makeChart("piedivr", {
+        var piechart = AmCharts.makeChart("piediv", {
             "type": "pie",
             "startDuration": 0,
             "theme": "light",
