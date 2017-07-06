@@ -3,9 +3,20 @@
 @section('content')
   <div class="container">
     <h1>Bildirimler
-      <a type="button" id="create-notification" href="#" class="btn btn-primary pull-right">
-        <i class="glyphicon glyphicon-plus"></i> Yeni Ekle
-      </a>
+      <div class="btn-group pull-right" role="group">
+        <a type="button" id="create-notification" href="#" class="btn btn-primary">
+          <i class="glyphicon glyphicon-plus"></i> Yeni Ekle
+        </a>
+        @if (request()->has('is_custom') && request()->is_custom == 0)
+          <a type="button" href="{{ route('notification.index', ['is_custom' => '1']) }}" class="btn btn-warning">
+            <i class="glyphicon glyphicon-flash"></i> Özel
+          </a>
+        @else
+          <a type="button" href="{{ route('notification.index', ['is_custom' => '0']) }}" class="btn btn-warning">
+            <i class="glyphicon glyphicon-flash"></i> Otomatik
+          </a>
+        @endif
+      </div>
     </h1>
     <p class="lead"> Buradan sistemdeki bütün bildirimleri görüntüleyebilirsiniz.</p>
     <div class="row">
@@ -19,6 +30,7 @@
               <th>Sınav</th>
               <th>Planlanan</th>
               <th>Gönderilme</th>
+              <th>Kişi</th>
               <th style="width: 120px"> İşlem</th>
             </tr>
           </thead>
@@ -29,14 +41,11 @@
                 <td id="notification-message-{{ $notification->id }}">{{  $notification->message }} </td>
                 <td>{{  $notification->creator->name }} </td>
                 <td>
-                  @if ($notification->exam == null)
-                    Herkes
-                  @else
-                    {{ $notification->exam->abb }}
-                  @endif
+                  {{ count($notification->exams) > 0 ? $notification->exams->implode('abb', ', ') : 'Herkes'}}
                 </td>
-                <td>{{  date("d.m.Y H:i", strtotime($notification->expected_at)) }}</td>
-                <td>{{ $notification->sent_at ? date("d.m.Y H:i", strtotime($notification->sent_at)) : 'Gönderilmedi' }}</td>
+                <td>{{ date("d.m.Y H:i", strtotime($notification->expected_at)) }}</td>
+                <td>{{ $notification->sent_at ? date("d.m.Y H:i", strtotime($notification->sent_at)) : '-' }}</td>
+                <td>{{  $notification->recepients ?: '-' }} </td>
                 <td>
                   <div class="btn-group" role="group">
                     @unless ($notification->sent_at)
@@ -55,44 +64,13 @@
               </tr>
             @empty
               <tr>
-                <td colspan="5">Bildirim bulunmamaktadır.</td>
+                <td colspan="6">Bildirim bulunmamaktadır.</td>
               </tr>
             @endforelse
           </tbody>
         </table>
+        {!! $notifications->links() !!}
       </div>
-
-      <div class="col-md-4">
-        {!! Form::open(['route' => 'notification.store', 'method' => 'POST']) !!}
-        <div class="portlet-body">
-          <div class="form-group">
-            {!! Form::label( 'message', 'Bildirim',['class' => 'control-label']) !!} <span class="required">* </span>
-            {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => 'Başarılar dileriz']) !!}
-          </div>
-
-          <div class="form-group">
-            {!! Form::label( 'expected_at', 'Planlanan Tarih:',['class' => 'control-label']) !!} <span
-            class="required">* </span>
-            {!! Form::text('expected_at', null, ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015 - 10:00', 'id' => 'datetimepicker']) !!}
-
-          </div>
-          <div class="form-group">
-            {!! Form::label( 'exam_id', 'Sınav',['class' => 'control-label']) !!} <span class="required">* </span>
-            <select name="exam_id" id="examselect" class="select2 form-control" multiple>
-            </select>
-            <div class="help-block">
-              Sınav seçmezseniz herkese gider
-            </div>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-lg btn-primary">Gönder</button>
-          </div>
-
-        </div>
-        {!! Form::close() !!}
-
-      </div>
-
     </div>
   </div>
 @endsection
@@ -193,7 +171,7 @@
       html:
       '<textarea id="swal-input1" class="swal2-textarea" placeholder="Mesaj"></textarea>' +
       '<input id="swal-input2" class="swal2-input" placeholder="Planlanan Tarih">' +
-      '{!! Form::select('swal-input3', $exams, null, ['id' => 'swal-input3', 'class' => 'swal2-select select2', 'multiple']) !!}<div class"help-block>Sınav seçmezseniz herkese gider</div>',
+      '{!! Form::select('swal-input3[]', $exams, null, ['id' => 'swal-input3', 'class' => 'swal2-select select2', 'multiple']) !!}<div class"help-block>Sınav seçmezseniz herkese gider</div>',
       onOpen: function () {
         $('#swal-input1').focus();
         $('#swal-input2').datetimepicker({

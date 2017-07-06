@@ -21,6 +21,8 @@ class CreateNotificationsTable extends Migration
             $table->string('image')->nullable();
             $table->dateTime('expected_at');
             $table->dateTime('sent_at')->nullable();
+            $table->string('recepients')->nullable();
+            $table->boolean('is_custom')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

@@ -60,4 +60,8 @@ class Exam extends Model
         return $this->belongsToMany('App\Visitor','favorites','exam_id', 'visitor_id')->whereNull('deleted_at');
     }
 
+    public function notifications(){
+        return $this->belongsToMany('App\Notification');
+    }
+
 }

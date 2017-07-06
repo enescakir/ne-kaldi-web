@@ -65,7 +65,7 @@ Route::resource('visitors', 'VisitorController');
 
 Route::get('notification/test', 'NotificationController@test')->name('notification.test');
 Route::resource('notification', 'NotificationController');
-Route::post('notification/{id}/send', 'NotificationController@send')->name('notification.send');
+Route::post('notification/{notification}/send', 'NotificationController@send')->name('notification.send');
 
 Route::group([ 'prefix' => 'logs'], function() {
     Route::get('/', [ 'as'    => 'log-viewer::dashboard',  'uses'  => 'LogController@index',]);
