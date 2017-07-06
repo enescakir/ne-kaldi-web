@@ -16,36 +16,14 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        $favorites = Favorite::orderBy('created_at')->with('exam','visitor')->get();
-//        $exams = Exam::select('abb')->withCount('favorites')->orderBy('favorites_count', 'desc')->get()->groupBy('abb');
-
-        $examsCollection = Exam::select('abb')->withCount('favorites')->orderBy('favorites_count', 'desc')->get()->groupBy('abb');
-        $exams = [];
-        foreach( $examsCollection as $abb=>$exam ){
-            if( strpos($abb, "e-YDS") === 0){
-                $eYDS = [];
-                foreach( $exams as $examArray){
-                    if( $examArray["abb"] == "e-YDS"){
-                        $eYDS = $examArray;
-                    }
-                }
-                if( count($eYDS) > 0){
-                    $eYDS["favorites_count"] += $exam->sum('favorites_count');
-                }
-                else {
-                    $eYDS = [ "abb" => "e-YDS", "favorites_count" => $exam->sum('favorites_count')];
-                    array_push($exams, $eYDS);
-                }
-
-            }
-            else{
-                array_push($exams, [ "abb" => $abb, "favorites_count" => $exam->sum('favorites_count')]);
-            }
-        }
-        usort($exams, function($a, $b) {
-            return $b['favorites_count'] - $a['favorites_count'];
-        });
-        return view('favorites.index', compact(['favorites', 'exams']));
+        $favorites_count = Favorite::count();
+        $exams = Exam::select('category')
+          ->withCount('favorites')
+          ->groupBy('category')
+          ->orderBy('favorites_count', 'DESC')
+          ->get()
+          ->toArray();
+        return view('favorites.index', compact(['favorites_count', 'exams']));
     }
 
     /**

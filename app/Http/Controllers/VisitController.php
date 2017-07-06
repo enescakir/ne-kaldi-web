@@ -28,8 +28,14 @@ class VisitController extends Controller
      */
     public function index()
     {
-        $exams = Exam::select('abb')->withCount('visits')->orderBy('visits_count', 'DESC')->get()->groupBy('category');
-        return view('visits.index', compact(['exams']));
+        $visits_count = Visit::count();
+        $exams = Exam::select('category')
+          ->withCount('visits')
+          ->groupBy('category')
+          ->orderBy('visits_count', 'DESC')
+          ->get()
+          ->toArray();
+        return view('visits.index', compact(['visits_count', 'exams']));
     }
 
     /**

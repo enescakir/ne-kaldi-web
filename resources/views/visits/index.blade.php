@@ -7,30 +7,8 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3>Toplam {{ count($visits) }} ziyaret</h3>
-            <div id="pie-chart"> </div>
-            {{--<table class="table table-hover table-striped table-bordered" style="width:100%;">--}}
-                {{--<thead>--}}
-                {{--<tr>--}}
-                    {{--<th> Sınav </th>--}}
-                    {{--<th> Tarih </th>--}}
-                    {{--<th> Ziyaretçi No </th>--}}
-                {{--</tr>--}}
-                {{--</thead>--}}
-                {{--<tbody>--}}
-                {{--@forelse ($visits as $visit)--}}
-                    {{--<tr>--}}
-                        {{--<td>{{  $visit->exam->abb }} </td>--}}
-                        {{--<td>{{  date("d.m.Y h:m:s", strtotime($visit->created_at)) }}</td>--}}
-                        {{--<td>{{  $visit->visitor->id }} </td>--}}
-                    {{--</tr>--}}
-                {{--@empty--}}
-                    {{--<tr>--}}
-                        {{--<td colspan="3">Ziyaret Yok</td>--}}
-                    {{--</tr>--}}
-                {{--@endforelse--}}
-                {{--</tbody>--}}
-            {{--</table>--}}
+            <h3>Toplam {{ $visits_count }} ziyaret</h3>
+            <div id="pie-chart" style="height:700px;"> </div>
         </div>
     </div>
 </div>
@@ -75,7 +53,7 @@
             },
             "dataProvider": datas,
             "valueField": "visits_count",
-            "titleField": "abb",
+            "titleField": "category",
             "export": {
                 "enabled": true
             }
