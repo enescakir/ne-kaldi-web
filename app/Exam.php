@@ -44,6 +44,14 @@ class Exam extends Model
         return $this->attributes['end'] = Carbon::createFromFormat('d/m/Y', $date);
     }
 
+    public function scopeCurrent($query){
+        $query->where('date', '>', Carbon::now());
+    }
+
+    public function scopePassed($query){
+      $query->where('date', '<=', Carbon::now());
+    }
+
     public function scopeActivated($query){
         $query->where('activated',1);
     }
