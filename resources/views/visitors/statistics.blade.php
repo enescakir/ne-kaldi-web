@@ -6,50 +6,30 @@
             width	: 100%;
             height	: 500px;
         }
+        #piediv {
+            width	: 100%;
+            height	: 700px;
+        }
     </style>
 @endsection
 @section('content')
     <div class="container">
-        <h1>Ziyaretçiler
+        <h1>Ziyaretçiler - {{ number_format($visitorsCount, 0, ".", ",") }} kişi
             <a type="button" href="{{ route('visitors.index') }}" class="btn btn-primary pull-right">
                 <i class="glyphicon glyphicon-th-list"></i> Liste
             </a>
         </h1>
     <p class="lead"> Uygulamamızı indiren kişilerin istatistikleri</p>
-
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div id="chartdiv"></div>
-            </div>
-            <div class="col-md-3">
-                <div class="alert alert-info">
-                    <h2><strong>İstatistikler</strong></h2>
-                    <table style="width: 100%">
-                        <tr>
-                            <td style="text-align: right; padding-right: 5px;"><h3><strong>{{ $visitorsCount }}</strong></h3></td>
-                            <td><h3> farklı kişi</h3></td>
-                        </tr>
-                        @foreach( $visitorDevices as $visitorDevice)
-                            <tr>
-                                <td style="text-align: right; padding-right: 5px;"><strong>{{ $visitorDevice->total }}</strong></td>
-                                <td>{{ $visitorDevice->via }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
-
-                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-info">
-                    <h2><strong>{{ $visitorAPIs[1]->api_version }} -> </strong> {{ $visitorAPIs[1]->total }} %{{ $visitorAPIs[1]->total * 100 / ($visitorAPIs[0]->total + $visitorAPIs[1]->total + $visitorAPIs[2]->total) }}</h2>
-                    <h2><strong>{{ $visitorAPIs[0]->api_version }} -> </strong> {{ $visitorAPIs[0]->total }} %{{ $visitorAPIs[0]->total * 100 / ($visitorAPIs[0]->total + $visitorAPIs[1]->total + $visitorAPIs[2]->total) }}</h2>
-                    <h2><strong>Belirsiz -> </strong> {{ $visitorAPIs[2]->total }}</h2>
-                </div>
+              <div id="piediv"> </div>
             </div>
         </div>
-
     </div>
 @endsection
 
@@ -135,13 +115,54 @@
             },
             "dataProvider": datas
         });
-
         chart.addListener("rendered", zoomChart);
-
         zoomChart();
-
         function zoomChart() {
             chart.zoomToIndexes(chart.dataProvider.length - 40, chart.dataProvider.length - 1);
         }
+    </script>
+    <script>
+        var pie_datas = <?php echo json_encode($visitorDevices) ?>;
+        var pie_chart = AmCharts.makeChart("piediv", {
+            "type": "pie",
+            "startDuration": 0,
+            "theme": "light",
+            "addClassNames": true,
+            "legend":{
+                "position":"right",
+                "marginRight":100,
+                "autoMargins":false
+            },
+            "innerRadius": "30%",
+            "defs": {
+                "filter": [{
+                    "id": "shadow",
+                    "width": "200%",
+                    "height": "200%",
+                    "feOffset": {
+                        "result": "offOut",
+                        "in": "SourceAlpha",
+                        "dx": 0,
+                        "dy": 0
+                    },
+                    "feGaussianBlur": {
+                        "result": "blurOut",
+                        "in": "offOut",
+                        "stdDeviation": 5
+                    },
+                    "feBlend": {
+                        "in": "SourceGraphic",
+                        "in2": "blurOut",
+                        "mode": "normal"
+                    }
+                }]
+            },
+            "dataProvider": pie_datas,
+            "valueField": "total",
+            "titleField": "via",
+            "export": {
+                "enabled": true
+            }
+        });
     </script>
 @endsection

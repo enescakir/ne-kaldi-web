@@ -28,14 +28,20 @@ class VisitController extends Controller
      */
     public function index()
     {
-        $visits_count = Visit::count();
-        $exams = Exam::select('category')
+        $visitsCount = Visit::count();
+        $visitsPerExam = Exam::select('category')
           ->withCount('visits')
           ->groupBy('category')
           ->orderBy('visits_count', 'DESC')
           ->get()
           ->toArray();
-        return view('visits.index', compact(['visits_count', 'exams']));
+        $visitsDaily = Visit::groupBy('date')
+            ->orderBy('date')
+            ->get(array(
+                DB::raw('DATE(`created_at`) AS `date`'),
+                DB::raw('COUNT(*) as `value`')
+            ));
+        return view('visits.index', compact(['visitsCount', 'visitsPerExam', 'visitsDaily']));
     }
 
     /**

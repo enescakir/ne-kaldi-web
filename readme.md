@@ -6,4 +6,4 @@ It's developed with [Laravel](http://www.laravel.com) Framework.
 [One Signal](http://www.onesignal.com) is used for sending push notifications.
 
 ## License
-The Ne Kaldı? is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Ne Kaldı? is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
