@@ -148,9 +148,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class,
-        Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider::class,
         Arcanedev\LogViewer\LogViewerServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -207,9 +206,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
-        'PushNotification' => Davibennun\LaravelPushNotification\Facades\PushNotification::class,
-
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
     ],
 
 ];
