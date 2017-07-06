@@ -10,7 +10,7 @@ use Auth;
 class Exam extends Model
 {
     use SoftDeletes;
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $dates = ['deleted_at', 'created_at', 'updated_at', 'date', 'start', 'end'];
 
     public static function boot() {
         parent::boot();
@@ -40,15 +40,33 @@ class Exam extends Model
         return $this->attributes['start'] = Carbon::createFromFormat('d/m/Y', $date);
     }
 
-    public function setEndAttribute($date){
+    public function setEndAttribute($date)
+    {
         return $this->attributes['end'] = Carbon::createFromFormat('d/m/Y', $date);
     }
 
-    public function scopeCurrent($query){
+    public function getDayToDateAttribute()
+    {
+     return Carbon::now()->diffInDays($this->date, false);
+    }
+
+    public function getDayToStartAttribute()
+    {
+      return Carbon::now()->diffInDays($this->start, false);
+    }
+
+    public function getDayToEndAttribute()
+    {
+      return Carbon::now()->diffInDays($this->end, false);
+    }
+
+    public function scopeCurrent($query)
+    {
         $query->where('date', '>', Carbon::now());
     }
 
-    public function scopePassed($query){
+    public function scopePassed($query)
+    {
       $query->where('date', '<=', Carbon::now());
     }
 

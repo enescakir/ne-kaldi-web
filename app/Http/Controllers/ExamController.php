@@ -35,7 +35,7 @@ class ExamController extends Controller
   public function index(Request $request)
   {
 
-    if ($request->has('passed')) {
+    if ($request->passed == 1) {
       $exams = Exam::withCount('visits', 'favorites')->orderBy('date', 'DESC')->passed()->get();
     } else {
       $exams = Exam::withCount('visits', 'favorites')->orderBy('date')->current()->get();
