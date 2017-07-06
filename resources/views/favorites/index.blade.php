@@ -14,7 +14,7 @@
 
 @section('content')
     <div class="container">
-    <h1>Favoriler - Toplam {{ $favoritesCount }} favori</h1>
+    <h1>Favoriler - Toplam {{ number_format($favoritesCount, 0, ".", ",") }} favori</h1>
     <p class="lead"> Sistemde favorilenmiş sınavlar</p>
     <div class="row">
         <div class="col-md-12">
