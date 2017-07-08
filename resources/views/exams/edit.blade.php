@@ -22,20 +22,20 @@
 
                 <div class="form-group">
                     {!! Form::label( 'date', 'Tarihi',['class' => 'control-label']) !!} <span class="required">* </span>
-                    {!! Form::text('date', date("d/m/Y - H:i", strtotime($exam->date)), ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015 - 10:00', 'id' => 'datetimepicker']) !!}
+                    {!! Form::text('date', date("d.m.Y - H:i", strtotime($exam->date)), ['class' => 'form-control datetime-picker', 'placeholder' => 'örn: 18.03.2015 - 10:00']) !!}
 
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label( 'start', 'Başvuru Başlangıcı',['class' => 'control-label']) !!} <span class="required">* </span>
-                            {!! Form::text('start',  ( $exam->start == null ? null : date("d/m/Y", strtotime($exam->start)) ), ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015', 'id' => 'startpicker']) !!}
+                            {!! Form::text('start',  ( $exam->start == null ? null : date("d.m.Y", strtotime($exam->start)) ), ['class' => 'form-control date-picker', 'placeholder' => 'örn: 18.03.2015']) !!}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label( 'end', 'Başvuru Bitişi',['class' => 'control-label']) !!} <span class="required">* </span>
-                            {!! Form::text('end', ( $exam->end == null ? null : date("d/m/Y", strtotime($exam->end)) ), ['class' => 'form-control', 'placeholder' => 'örn: 18/03/2015', 'id' => 'endpicker']) !!}
+                            {!! Form::text('end', ( $exam->end == null ? null : date("d.m.Y", strtotime($exam->end)) ), ['class' => 'form-control date-picker', 'placeholder' => 'örn: 18.03.2015']) !!}
                         </div>
                     </div>
                 </div>
@@ -92,35 +92,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('page-scripts')
-
-    <script src="{{ asset('scripts/moment.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('scripts/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('scripts/bootstrap-datetimepicker.tr.js') }}" type="text/javascript"></script>
-
-    <script type="text/javascript">
-        $('#datetimepicker').datetimepicker({
-            language: "tr",
-            format: 'dd/mm/yyyy - hh:ii',
-            autoclose: true,
-            todayHighlight: true,
-            minuteStep: 5
-        });
-        $('#startpicker').datetimepicker({
-            language: "tr",
-            format: 'dd/mm/yyyy',
-            autoclose: true,
-            todayHighlight: true,
-        });
-
-        $('#endpicker').datetimepicker({
-            language: "tr",
-            format: 'dd/mm/yyyy',
-            autoclose: true,
-            todayHighlight: true,
-        });
-
-    </script>
 @endsection

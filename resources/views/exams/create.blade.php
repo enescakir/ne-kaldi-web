@@ -20,19 +20,19 @@
                 </div>
                 <div class="form-group">
                     {!! Form::label( 'date', 'Tarihi',['class' => 'control-label']) !!} <span class="required">* </span>
-                    {!! Form::text('date', null, ['class' => 'form-control datetime-picker', 'placeholder' => 'örn: 18/03/2015 - 10:00']) !!}
+                    {!! Form::text('date', null, ['class' => 'form-control datetime-picker', 'placeholder' => 'örn: 18.03.2015 - 10:00']) !!}
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label( 'start', 'Başvuru Başlangıcı',['class' => 'control-label']) !!} <span class="required">* </span>
-                            {!! Form::text('start', null, ['class' => 'form-control date-picker', 'placeholder' => 'örn: 18/03/2015']) !!}
+                            {!! Form::text('start', null, ['class' => 'form-control date-picker', 'placeholder' => 'örn: 18.03.2015']) !!}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             {!! Form::label( 'end', 'Başvuru Bitişi',['class' => 'control-label']) !!} <span class="required">* </span>
-                            {!! Form::text('end', null, ['class' => 'form-control date-picker', 'placeholder' => 'örn: 18/03/2015']) !!}
+                            {!! Form::text('end', null, ['class' => 'form-control date-picker', 'placeholder' => 'örn: 18.03.2015']) !!}
                         </div>
                     </div>
                 </div>

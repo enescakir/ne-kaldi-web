@@ -97,8 +97,9 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function edit(Exam $exam)
+  public function edit($id)
   {
+    $exam = Exam::find($id);
     return view('exams.edit', compact(['exam']));
   }
 
@@ -109,8 +110,9 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function update(Request $request, Exam $exam)
+  public function update(Request $request, $id)
   {
+    $exam = Exam::find($id);
     $exam->name = $request->input('name');
     $exam->abb = $request->input('abb');
     $exam->date = $request->input('date');
@@ -149,8 +151,9 @@ class ExamController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function destroy(Exam $exam)
+  public function destroy($id)
   {
+    $exam = Exam::find($id);
     $exam->delete();
     return $exam;
   }

@@ -33,16 +33,16 @@ class Exam extends Model
     }
 
     public function setDateAttribute($date){
-        return $this->attributes['date'] = Carbon::createFromFormat('d/m/Y - H:i', $date);
+        return $this->attributes['date'] = Carbon::createFromFormat('d.m.Y - H:i', $date);
     }
 
     public function setStartAttribute($date){
-        return $this->attributes['start'] = Carbon::createFromFormat('d/m/Y', $date);
+        return $this->attributes['start'] = Carbon::createFromFormat('d.m.Y', $date);
     }
 
     public function setEndAttribute($date)
     {
-        return $this->attributes['end'] = Carbon::createFromFormat('d/m/Y', $date);
+        return $this->attributes['end'] = Carbon::createFromFormat('d.m.Y', $date);
     }
 
     public function getDayToDateAttribute()

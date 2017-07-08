@@ -151,7 +151,7 @@
 
           $('.datetime-picker').datetimepicker({
             language: "tr",
-            format: 'dd/mm/yyyy - hh:ii',
+            format: 'dd.mm.yyyy - hh:ii',
             autoclose: true,
             todayHighlight: true,
             minuteStep: 5
@@ -159,7 +159,7 @@
 
           $('.date-picker').datetimepicker({
             language: "tr",
-            format: 'dd/mm/yyyy',
+            format: 'dd.mm.yyyy',
             autoclose: true,
             todayHighlight: true,
           });
