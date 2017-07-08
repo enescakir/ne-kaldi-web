@@ -72,7 +72,7 @@ class Notification extends Model
       curl_setopt($ch, CURLOPT_POST, TRUE);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-      $response = curl_exec($ch);
+      $response = json_decode(curl_exec($ch));
       curl_close($ch);
 
       $this->sent_at = Carbon::now();
